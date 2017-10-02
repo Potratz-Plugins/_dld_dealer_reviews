@@ -16,10 +16,10 @@ class DealerReviews {
     public $numbericRating = '';
     public $reviewText = '';
 
-    public function __construct($s_fb_name = '', $s_image_url = '', $i_fb_rating = 5,  $s_fb_review_text = '', $i_postID = null){
+    public function __construct($s_fb_name = '', $s_image_url = '', $i_fb_rating = 5,  $s_fb_review_text = '', $s_review_type = 'facebook', $i_postID = null){
         $this->id = $i_postID;
         //  $this->active = $b_is_active;
-        // $this->reviewType = $s_review_type;
+        $this->reviewType = $s_review_type;
         $this->reviewerName = $s_fb_name;
         $this->imageUrl = $s_image_url;
         $this->numbericRating = $i_fb_rating;
@@ -47,6 +47,11 @@ public function show_dealer_review_sortable($b_is_active = false) {
                 $s_fb_name = $this->reviewerName;
                 $i_fb_rating = $this->numbericRating;
                 $s_fb_review_text = $this->reviewText;
+                $s_review_type = $this->reviewType;
+                // $s_path_to_icons = plugins_url( 'src/images/', __FILE__ );
+                $s_path_to_icons = plugins_url( '_dld_dealer_reviews/src/images/' );
+                $s_full_path_to_icon = $s_path_to_icons.$s_review_type;
+                $s_review_type_icon = '<img src="'.$s_full_path_to_icon.'.png" style="height:35px;width:35px;"/>'; 
                 
                 echo '<li class="liSortable" id="li-'.$i_postID.'">';
 
@@ -57,18 +62,22 @@ public function show_dealer_review_sortable($b_is_active = false) {
                 
                 if($b_is_active){
                     echo '
+                    <table><tr><td>'.$s_review_type_icon.'</td><td>
                     <form>
                         <input type="radio" class="DealerReviewIsVisible" name="showReview-'.$i_postID.'" value="Show" checked="checked"> Visible </input></br>
                         <input type="radio" class="DealerReviewIsVisible" name="showReview-'.$i_postID.'" value="Hide"> Do Not Show</input>
                     </form>
+                    </td></tr></table>
                     ';
                     
                 } else {
                     echo '
+                    <table><tr><td>'.$s_review_type_icon.'</td><td>
                     <form>
                         <input type="radio" class="DealerReviewIsVisible" name="showReview-'.$i_postID.'" value="Show" > Visible </input></br>
                         <input type="radio" class="DealerReviewIsVisible" name="showReview-'.$i_postID.'" value="Hide" checked="checked"> Do Not Show</input>
                     </form>
+                    </td></tr></table>
                 ';
                 }
                         echo '
@@ -201,7 +210,7 @@ protected function reviews_get_stars($rating) {
     }
    }
 
-   public function dld_facebook_reviews_save_to_db(){ 
+   public function dld_dealer_reviews_save_to_db(){ 
 
     // echo '<h1>TRYING TO SAVE</h1>';
         //pre_var_dump($this, 'THIS REVIEW');
@@ -212,11 +221,11 @@ protected function reviews_get_stars($rating) {
         $s_fb_name = $this->reviewerName;
         $i_fb_rating = $this->numbericRating;
         $s_fb_review_text = $this->reviewText;
-        //$s_review_type = $this->reviewType;
+        $s_review_type = $this->reviewType;
 
         $a_CreateRating = array(
                 'ID'           	=> '',
-                'post_status' 	=> 'publish',
+                'post_status' 	=> $s_review_type,
                 'post_title'	=> $s_image_url,
                 'post_excerpt'   => $s_fb_name,
                 'comment_status'=> $i_fb_rating,

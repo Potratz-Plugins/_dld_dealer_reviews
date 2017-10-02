@@ -84,6 +84,7 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
  // LOOP through all returned reviews, pull photos and display data
  $i_count = 0;
  foreach($json->data as $record){
+     pre_var_dump($record, 'a reacord');
      // only show review if above or equal to minimum review number (set as option)
      if($record->rating >= $i_minimum_review_num){ 
         
@@ -110,10 +111,10 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
 
 
 
-        $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text);
+        $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, 'facebook');
         $i_count++;
        
-        $o_Review->dld_facebook_reviews_save_to_db();
+        $o_Review->dld_dealer_reviews_save_to_db();
 
          // SAVE REVIEW TO DB
 
@@ -219,7 +220,7 @@ function initMap() {
     foreach($a_allReviewsFromDB->posts as $o_ReviewData){
         // pre_var_dump($o_ReviewData, 'SOME REVIEW DATA');
         // SET object variables
-        $s_review_type = $o_ReviewData->post_type;
+        $s_review_type = $o_ReviewData->post_status;
         $s_fb_name = $o_ReviewData->post_excerpt;
         $s_image_url = $o_ReviewData->post_title;
         $i_fb_rating = $o_ReviewData->comment_status;  
@@ -227,7 +228,7 @@ function initMap() {
         $i_postID = $o_ReviewData->ID;
 
         // CREATE DealerReviews object
-        $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, $i_postID );
+        $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, $s_review_type, $i_postID );
         echo '<div class="fb_reviews" style="width:600px;padding:15px;">';
        $o_Review->show_dealer_review();
         echo '</div>';
@@ -244,8 +245,11 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData) {
         // SAVE ALL GOOGLE REVIEWS TO DB
         dld_process_google_reviews_from_string($s_googleReviewsRawData);
     }
+   
     
     $a_allReviewsFromDB = dld_facebook_get_all_reviews_raw_data();
+
+    // pre_var_dump($a_allReviewsFromDB, 'all reviews from db');
     $a_inactiveReviews = array();
 
     TODO: // get array (option value)
@@ -253,6 +257,7 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData) {
 		add_option( 'DealerReviewsActivePostIds', '', null, 'no');
 	}
     $s_postIdsOfActiveReviews = get_option('DealerReviewsActivePostIds');
+    // echo $s_postIdsOfActiveReviews;
 
     echo '<h2><strong>Active Reviews:</strong></h2>';
     echo '<ul id="sortable" class="ulSortable">';
@@ -260,8 +265,10 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData) {
     // DISPLAY ALL DATABASE STORED REVIEWS
     foreach($a_allReviewsFromDB->posts as $o_ReviewData){
 
+        pre_var_dump($o_ReviewData, 'review data');
         // SET object variables
-        $s_review_type = $o_ReviewData->post_type;
+        // TODO: NOT IN post_type
+        $s_review_type = $o_ReviewData->post_status;
         $s_fb_name = $o_ReviewData->post_excerpt;
         $s_image_url = $o_ReviewData->post_title;
         $i_fb_rating = $o_ReviewData->comment_status;  
@@ -270,7 +277,7 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData) {
         $s_postIDString = strval($i_postID);
 
         // CREATE DealerReviews object
-        $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, $i_postID );
+        $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, $s_review_type, $i_postID);
 
         // TODO: if post id is in array, show review, else add it to array of inactive reviews 
 
@@ -323,8 +330,8 @@ function dld_process_google_reviews_from_string($s_rawData){
             }
 
             // CREATE DealerReviews object
-            $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text );
-            $o_Review->dld_facebook_reviews_save_to_db();
+            $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, 'google' );
+            $o_Review->dld_dealer_reviews_save_to_db();
         }
     }
 }
@@ -360,14 +367,15 @@ return $NewStr;
 
 
 function dld_facebook_get_all_reviews_raw_data(){
-    $a_allReviewsFromDB =
+    $a_allReviewsFromDB = 
         new WP_Query(
                 array(
                         'post_type' 	=> 'dealerreview',
-                        'post_status' 	=> 'publish',
+                        'post_status' 	=> 'google',
                         'posts_per_page' 	=> '-1'
-                )
+                ) 
         );
+       
 return $a_allReviewsFromDB;
     }
 

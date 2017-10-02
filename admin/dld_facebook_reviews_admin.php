@@ -230,7 +230,7 @@ if ($s_RefreshReviews == 'yes'){
         echo "
         <script>
             document.getElementById('txtRefreshReviews').value = 'no';
-         document.getElementById('btnRefreshReviews').click();
+            document.getElementById('btnRefreshReviews').click();
             var x = false;
         </script>";
         

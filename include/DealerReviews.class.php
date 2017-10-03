@@ -7,24 +7,23 @@
  */
 class DealerReviews {
     
-    public $id = 0;
-    //public $active = true;
-    // public $order = 0;
-   // public $reviewType = '';
-    public $imageUrl = '';
     public $reviewerName = '';
-    public $numbericRating = '';
+    public $imageUrl = '';
+    public $numericRating = 0;
     public $reviewText = '';
+    public $reviewType = '';
+    public $authorId = '';
+    public $id = 0;
 
-    public function __construct($s_fb_name = '', $s_image_url = '', $i_fb_rating = 5,  $s_fb_review_text = '', $s_review_type = 'facebook', $i_postID = null){
-        $this->id = $i_postID;
-        //  $this->active = $b_is_active;
-        $this->reviewType = $s_review_type;
-        $this->reviewerName = $s_fb_name;
+    public function __construct($s_reviewer_name = '', $s_image_url = '', $i_numeric_rating = 5,  $s_review_text = '', $s_review_type = 'facebook', $s_author_id = '', $i_postID = null){
+
+        $this->reviewerName = $s_reviewer_name;
         $this->imageUrl = $s_image_url;
-        $this->numbericRating = $i_fb_rating;
-        $this->reviewText = $s_fb_review_text;
-        // return($this);
+        $this->numericRating = $i_numeric_rating;
+        $this->reviewText = $s_review_text;
+        $this->reviewType = $s_review_type;
+        $this->authorId = $s_author_id;
+        $this->id = $i_postID;
         }
 
     public function __destruct(){}
@@ -40,15 +39,16 @@ class DealerReviews {
  // THIS FUNCTION for displaying in admin as sortable list
 public function show_dealer_review_sortable($b_is_active = false) {  
 
-               // $s_reviewType = $this->reviewType;
-                $i_postID = $this->id;
+                // GET object fields
+                $s_reviewer_name = $this->reviewerName;
                 $s_image_url = $this->imageUrl;
-                $s_fb_image = '<img src="'.$s_image_url.'" class="photoDisplay"/>'; 
-                $s_fb_name = $this->reviewerName;
-                $i_fb_rating = $this->numbericRating;
-                $s_fb_review_text = $this->reviewText;
+                $i_numeric_rating = $this->numericRating;
+                $s_review_text = $this->reviewText;
                 $s_review_type = $this->reviewType;
-                // $s_path_to_icons = plugins_url( 'src/images/', __FILE__ );
+                // $s_author_id = $this->authorId;
+                $i_postID = $this->id;
+
+                $s_reviewer_image_display = '<img src="'.$s_image_url.'" class="photoDisplay"/>'; 
                 $s_path_to_icons = plugins_url( '_dld_dealer_reviews/src/images/' );
                 $s_full_path_to_icon = $s_path_to_icons.$s_review_type;
                 $s_review_type_icon = '<img src="'.$s_full_path_to_icon.'.png" style="height:35px;width:35px;"/>'; 
@@ -81,20 +81,20 @@ public function show_dealer_review_sortable($b_is_active = false) {
                 ';
                 }
                         echo '
-                        '.$s_fb_image.'
+                        '.$s_reviewer_image_display.'
                     </td><td>';
                         echo '
                         
-                        <strong>'.$s_fb_name.'</strong></br>';
-                        $this->reviews_get_stars($i_fb_rating);
+                        <strong>'.$s_reviewer_name.'</strong></br>';
+                        $this->reviews_get_stars($i_numeric_rating);
                         echo '</br>
-                        '.$s_fb_review_text.'</br>
+                        '.$s_review_text.'</br>
                         POST ID : '.$i_postID.'
                         <input type="text" class="DealerReviewPostId" name="postId-'.$i_postID.'" id="'.$i_postID.'" value="'.$i_postID.'" style="display:none;"></input>
                         <input type="text" class="DealerReviewImage" name="imageUrl-'.$i_postID.'" id="imageUrl-'.$i_postID.'" value="'.$s_image_url.'" style="display:none;"></input>
-                        <input type="text" class="DealerReviewName" name="name-'.$i_postID.'" id="name-'.$i_postID.'" value="'.$s_fb_name.'" style="display:none;"></input>
-                        <input type="text" class="DealerReviewRating" name="rating-'.$i_postID.'" id="rating-'.$i_postID.'" value="'.$i_fb_rating.'" style="display:none;"></input>
-                        <textarea class="DealerReviewText" name="text-'.$i_postID.'" id="text-'.$i_postID.'"style="display:none;">'.$s_fb_review_text.'</textarea>
+                        <input type="text" class="DealerReviewName" name="name-'.$i_postID.'" id="name-'.$i_postID.'" value="'.$s_reviewer_name.'" style="display:none;"></input>
+                        <input type="text" class="DealerReviewRating" name="rating-'.$i_postID.'" id="rating-'.$i_postID.'" value="'.$i_numeric_rating.'" style="display:none;"></input>
+                        <textarea class="DealerReviewText" name="text-'.$i_postID.'" id="text-'.$i_postID.'"style="display:none;">'.$s_review_text.'</textarea>
                     </td></tr>
                     </table>
                     </div>
@@ -108,10 +108,10 @@ public function show_dealer_review_sortable($b_is_active = false) {
 //             $i_postID = $this->id;
 //             $b_is_active = $this->active;
 //             $s_image_url = $this->imageUrl;
-//             $s_fb_image = '<img src="'.$s_image_url.'" class="photoDisplay"/>'; 
-//             $s_fb_name = $this->reviewerName;
-//             $i_fb_rating = $this->numbericRating;
-//             $s_fb_review_text = $this->reviewText;
+//             $s_reviewer_image_display = '<img src="'.$s_image_url.'" class="photoDisplay"/>'; 
+//             $s_reviewer_name = $this->reviewerName;
+//             $i_numeric_rating = $this->numericRating;
+//             $s_review_text = $this->reviewText;
         
 //             echo '
 //             <table style="width:100%">
@@ -129,13 +129,13 @@ public function show_dealer_review_sortable($b_is_active = false) {
 //                 ';
 //             }
 //                     echo '
-//                     </br>'.$s_fb_image.'
+//                     </br>'.$s_reviewer_image_display.'
 //                 </td><td>';
 //                     echo '
-//                     <strong>'.$s_fb_name.'</strong></br></br>';
-//                     $this->reviews_get_stars($i_fb_rating);
+//                     <strong>'.$s_reviewer_name.'</strong></br></br>';
+//                     $this->reviews_get_stars($i_numeric_rating);
 //                     echo '
-//                     </br></br>'.$s_fb_review_text.'</br></br>
+//                     </br></br>'.$s_review_text.'</br></br>
 //                     POST ID : &nbsp;&nbsp;&nbsp;&nbsp;
 //                     <span style="font-size:16px">'.$i_postID.'</span>
 //                 </td></tr>
@@ -149,10 +149,10 @@ public function show_dealer_review() {
                 $i_postID = $this->id;
                 //$b_is_active = $this->active;
                 $s_image_url = $this->imageUrl;
-                $s_fb_image = '<img src="'.$s_image_url.'" class="photoDisplay"/>'; 
-                $s_fb_name = $this->reviewerName;
-                $i_fb_rating = $this->numbericRating;
-                $s_fb_review_text = $this->reviewText;
+                $s_reviewer_image_display = '<img src="'.$s_image_url.'" class="photoDisplay"/>'; 
+                $s_reviewer_name = $this->reviewerName;
+                $i_numeric_rating = $this->numericRating;
+                $s_review_text = $this->reviewText;
         
         
                 echo '
@@ -177,15 +177,15 @@ public function show_dealer_review() {
                 }
                 echo    '
                         <tr><td style="width:25%">';
-                            echo $s_fb_image.'
+                            echo $s_reviewer_image_display.'
                         </td>
                         <td style="text-align:left">';
-                            echo '<strong>'.$s_fb_name.'</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</br>';
-                            $this->reviews_get_stars($i_fb_rating);
+                            echo '<strong>'.$s_reviewer_name.'</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</br>';
+                            $this->reviews_get_stars($i_numeric_rating);
                             echo '
                         </td></tr>
                         <tr><td colspan="2" style="padding:10px">
-                            <span style="font-size:16px">'.$s_fb_review_text.'</span>
+                            <span style="font-size:16px">'.$s_review_text.'</span>
                         </td></tr>
                         <tr><td style="padding:10px;font-size:16px">
                             POST ID : 
@@ -217,19 +217,21 @@ protected function reviews_get_stars($rating) {
         // $i_postID = $this->id;
       //  $b_is_active = $this->active;
         $s_image_url = $this->imageUrl;
-        $s_fb_image = '<img src="'.$s_image_url.'" class="photoDisplay"/>'; 
-        $s_fb_name = $this->reviewerName;
-        $i_fb_rating = $this->numbericRating;
-        $s_fb_review_text = $this->reviewText;
+        $s_author_id = $this->authorId;
+        // $s_reviewer_image = '<img src="'.$s_image_url.'" class="photoDisplay"/>'; 
+        $s_reviewer_name = $this->reviewerName;
+        $i_numeric_rating = $this->numericRating;
+        $s_review_text = $this->reviewText;
         $s_review_type = $this->reviewType;
 
         $a_CreateRating = array(
                 'ID'           	=> '',
+                'post_mime_type'=> $s_author_id,
                 'post_status' 	=> $s_review_type,
                 'post_title'	=> $s_image_url,
-                'post_excerpt'   => $s_fb_name,
-                'comment_status'=> $i_fb_rating,
-                'post_content'	=> $s_fb_review_text,
+                'post_excerpt'   => $s_reviewer_name,
+                'comment_status'=> $i_numeric_rating,
+                'post_content'	=> $s_review_text,
                 'post_type'		=> 'dealerreview'
             );
         $s_NewlyInsertedPostID = wp_insert_post( $a_CreateRating );

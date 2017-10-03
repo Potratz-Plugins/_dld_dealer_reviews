@@ -144,7 +144,7 @@ function dld_setup_facebook_reviews_admin_page(){
     <table>
         <tr><td colspan="2">
             <input type="text" name="refreshGoogleReviews" id="txtRefreshGoogleReviews" style="display:none;" value="yes">
-            <textarea class="textAreaGoogleReviews" name="PostedGoogleReviews" id="textAreaGoogleReviews" style="width:100%;height:375px;display:none"></textarea>
+            <textarea class="textAreaGoogleReviews" name="PostedGoogleReviews" id="textAreaGoogleReviews" style="width:100%;height:375px;"></textarea>
         </td></tr>
         <tr><td colspan="2">
             <input type="submit" value="Get New Google Reviews" name="submit"  id="btnRefreshGoogleReviews" class="myRedButton" style="width:600px;height:35px;"  ></strong>

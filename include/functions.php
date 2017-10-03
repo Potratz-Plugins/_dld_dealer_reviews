@@ -84,7 +84,7 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
  // LOOP through all returned reviews, pull photos and display data
  $i_count = 0;
  foreach($json->data as $record){
-     pre_var_dump($record, 'a reacord');
+    // pre_var_dump($record, 'a reacord');
      // only show review if above or equal to minimum review number (set as option)
      if($record->rating >= $i_minimum_review_num){ 
         
@@ -99,6 +99,8 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
          $s_fb_image = '<img src="'.$s_image_url.'" class="photoDisplay"/>';  
          $s_fb_name = $record->reviewer->name;
          $i_fb_rating = $record->rating;
+         $s_author_id = $record->reviewer->id;
+         pre_var_dump($s_author_id);
          if (isset($record->review_text)) { 
              $s_fb_review_text = RemoveBS($record->review_text);
          } else {
@@ -111,7 +113,7 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
 
 
 
-        $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, 'facebook');
+        $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, 'facebook', $s_author_id);
         $i_count++;
        
         $o_Review->dld_dealer_reviews_save_to_db();
@@ -194,7 +196,8 @@ function initMap() {
                         "GOOGLEREVIEWNAME:" + rev[i]['author_name'] + ",,," +
                         "GOOGLEREVIEWIMAGE:" + rev[i]['profile_photo_url'] + ",,," +
                         "GOOGLEREVIEWRATING:" + rev[i]['rating'] + ",,," +
-                        "GOOGLEREVIEWTEXT:" + rev[i]['text'] + ",.,.,";
+                        "GOOGLEREVIEWTEXT:" + rev[i]['text'] + ",,," +
+                        "GOOGLEREVIEWTIME:" + rev[i]['time'] + ",.,.,";
                         count++;
 
                     }
@@ -220,6 +223,7 @@ function initMap() {
     foreach($a_allReviewsFromDB->posts as $o_ReviewData){
         // pre_var_dump($o_ReviewData, 'SOME REVIEW DATA');
         // SET object variables
+        $s_author_id = $o_ReviewData->post_mime_type;
         $s_review_type = $o_ReviewData->post_status;
         $s_fb_name = $o_ReviewData->post_excerpt;
         $s_image_url = $o_ReviewData->post_title;
@@ -228,7 +232,7 @@ function initMap() {
         $i_postID = $o_ReviewData->ID;
 
         // CREATE DealerReviews object
-        $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, $s_review_type, $i_postID );
+        $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, $s_review_type, $s_author_id, $i_postID );
         echo '<div class="fb_reviews" style="width:600px;padding:15px;">';
        $o_Review->show_dealer_review();
         echo '</div>';
@@ -265,9 +269,10 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData) {
     // DISPLAY ALL DATABASE STORED REVIEWS
     foreach($a_allReviewsFromDB->posts as $o_ReviewData){
 
-        pre_var_dump($o_ReviewData, 'review data');
+       // pre_var_dump($o_ReviewData, 'review data');
         // SET object variables
         // TODO: NOT IN post_type
+        $s_author_id = $o_ReviewData->post_mime_type;
         $s_review_type = $o_ReviewData->post_status;
         $s_fb_name = $o_ReviewData->post_excerpt;
         $s_image_url = $o_ReviewData->post_title;
@@ -277,7 +282,7 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData) {
         $s_postIDString = strval($i_postID);
 
         // CREATE DealerReviews object
-        $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, $s_review_type, $i_postID);
+        $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, $s_review_type, $s_author_id, $i_postID);
 
         // TODO: if post id is in array, show review, else add it to array of inactive reviews 
 
@@ -302,11 +307,16 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData) {
 
 
 function dld_process_google_reviews_from_string($s_rawData){
+
+    // TODO: set author id
     
     // Break string of all reviews into strings for each review
     $a_almostObjects = explode(",.,.,", $s_rawData);
     // pre_var_dump($a_lessRawData, 'less raw data');
     foreach($a_almostObjects as $s_review){
+        $i_auth_id = 0;
+        $s_time_string = '';
+        $s_length_of_text = '';
         // check if review string has data
         if(strlen($s_review) > 0){
             // break this review string into fields 
@@ -326,15 +336,83 @@ function dld_process_google_reviews_from_string($s_rawData){
                 }
                 if($a_reviewFieldPair[0] == 'GOOGLEREVIEWTEXT'){
                     $s_fb_review_text = $a_reviewFieldPair[1];
+                    $s_length_of_text = strval(strlen($s_fb_review_text));
                 }
+                if($a_reviewFieldPair[0] == 'GOOGLEREVIEWTIME'){
+                    if(strlen($a_reviewFieldPair[1]) > 0){
+                        $s_time_string = $a_reviewFieldPair[1];
+                    } 
+                } 
             }
 
+              //Create unique author id / post_author by concatenating time string and text length
+              pre_var_dump($s_time_string, 'time string');
+              pre_var_dump($s_length_of_text, 'text len');
+              $s_author_id = $s_time_string.$s_length_of_text;
+              pre_var_dump($s_author_id, 'concat auth id string');
+  
+
             // CREATE DealerReviews object
-            $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, 'google' );
+            $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, 'google', $s_author_id );
             $o_Review->dld_dealer_reviews_save_to_db();
         }
     }
 }
+
+
+
+
+// function dld_process_google_reviews_from_string2($s_rawData){
+    
+//         // TODO: set author id
+        
+//         // Break string of all reviews into strings for each review
+//         $a_almostObjects = explode(",.,.,", $s_rawData);
+//         // pre_var_dump($a_lessRawData, 'less raw data');
+//         foreach($a_almostObjects as $s_review){
+//             $s_time_string = '';
+//             $s_length_of_text = '';
+//             // check if review string has data
+//             if(strlen($s_review) > 0){
+//                 // break this review string into fields 
+//                 $a_reviewFields = explode(",,,", $s_review);
+//                 // pre_var_dump($a_reviewFields, 'a review');
+//                 foreach($a_reviewFields as $s_reviewField){
+//                     $a_reviewFieldPair = explode(":", $s_reviewField, 2);
+//                     //pre_var_dump($a_reviewFieldPair, 'Rev Field Pair :');
+//                     if($a_reviewFieldPair[0] == 'GOOGLEREVIEWNAME'){
+//                         $s_fb_name = $a_reviewFieldPair[1];
+//                     }
+//                     if($a_reviewFieldPair[0] == 'GOOGLEREVIEWIMAGE'){
+//                         $s_image_url = $a_reviewFieldPair[1];
+//                     }
+//                     if($a_reviewFieldPair[0] == 'GOOGLEREVIEWRATING'){
+//                         $i_fb_rating = intval($a_reviewFieldPair[1]);
+//                     }
+//                     if($a_reviewFieldPair[0] == 'GOOGLEREVIEWTEXT'){
+//                         $s_fb_review_text = $a_reviewFieldPair[1];
+//                         $s_length_of_text = strval(strlen($s_fb_review_text));
+//                     }
+//                     if($a_reviewFieldPair[0] == 'GOOGLEREVIEWTIME'){
+//                         if(strlen($a_reviewFieldPair[1]) > 0){
+//                             $s_time_string = $a_reviewFieldPair[1];
+//                         } 
+//                     }
+//                 } 
+//             }
+//                 //Create unique author id / post_author by concatenating time string and text length
+//                 pre_var_dump($s_time_string, 'time string');
+//                 pre_var_dump($s_length_of_text, 'text len');
+//                 $s_author_id = $s_time_string.$s_length_of_text;
+//                 pre_var_dump($s_author_id, 'concat auth id string');
+//                 $s_author_id = (int)$s_author_id;
+//                 pre_var_dump($s_author_id, 'auth id int');
+    
+//                 // CREATE DealerReviews object
+//                 $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, 'google', $s_author_id );
+//                 $o_Review->dld_dealer_reviews_save_to_db();
+//         }
+//     }
 
 
 function fb_get_stars($rating) {

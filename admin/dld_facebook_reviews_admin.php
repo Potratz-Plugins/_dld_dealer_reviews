@@ -45,6 +45,7 @@ function dld_setup_facebook_reviews_admin_page(){
     
 
     ?>
+    <hr>
     <table>
         <tr><td>
             <fb:login-button
@@ -55,10 +56,11 @@ function dld_setup_facebook_reviews_admin_page(){
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id='logout' onclick='logout();'>logout</a>
         </td></tr>
     </table>
-
+    
     <form action="admin.php?page=dld_manage_facebook_reviews" method="post" enctype="multipart/form-data">
     <table style="width:600px;">
         <tr><td colspan="2" >
+        <hr>
             <h2><strong>Facebook Connect Data:</strong></h2>
         </td></tr>
 
@@ -78,8 +80,13 @@ function dld_setup_facebook_reviews_admin_page(){
         </td><td>
             <strong><input type="text" name="txtAppSecret" id="txtAppSecret" style="width:400px;" value="<?php echo $s_appSecret; ?>"></strong>
         </td></tr>
+        <tr><td colspan="2" ></br>
+    <input type="submit" value="Update Facebook Connect Data" name="submit"  id="btnUpdateFBConnectData" class="myButton" style="width:600px;height:35px;"  ></br></br>
+    
+        </td></tr>
         <tr><td colspan="2" >
-            <h2><strong>Set Minimum Review:</strong></h2>
+        <hr>
+            <h2><strong>Set Minimum Review To Display:</strong></h2>
         </td></tr>
         <tr><td>
             MINIMUM REVIEW 0-5 : 
@@ -119,9 +126,12 @@ function dld_setup_facebook_reviews_admin_page(){
                 <?php } ?>
             </select>
          </td></tr>
+         <tr><td colspan="2" >
+         </br>
+            <input type="submit" value="Update Minimum Review" name="submit"  id="btnUpdateMinimumReview" class="myButton" style="width:600px;height:35px;"  >
+        </tr></td>
     </table>
-                </br>
-    <input type="submit" value="Update Minimum Review / Connect Data" name="submit"  id="btnUpdateFBConnectData" class="myButton" style="width:600px;height:35px;"  ></strong>
+               
     <div class="errorDiv" style="color:red;font-weight:bold;" style="display:none"></div>
 </form>
 </br>
@@ -152,30 +162,15 @@ function dld_setup_facebook_reviews_admin_page(){
             <textarea class="textAreaGoogleReviews" name="PostedGoogleReviews" id="textAreaGoogleReviews" style="width:100%;height:375px;display:none;"></textarea>
         </td></tr>
         <tr><td colspan="2">
-            <input type="submit" value="Get New Google Reviews" name="submit"  id="btnRefreshGoogleReviews" class="myRedButton" style="width:600px;height:35px;"  ></strong>
-            <h2 id="spanGoogleReviewsResults" style="font-weight:bold;"></h2>
-            <input type="submit" value="Save New Google Reviews" name="submit"  id="btnSaveGoogleReviews" class="myRedButton" style="width:600px;height:35px;display:none;"  ></strong>
+            <input type="submit" value="Get New Google Reviews" name="submit"  id="btnRefreshGoogleReviews" class="myRedButton" style="width:600px;height:35px;"  >
+            <h2 id="spanGoogleReviewsResults" style="font-weight:bold;display:inline;"></h2>
+            <input type="submit" value="Save Google Reviews" name="submit"  id="btnSaveGoogleReviews" class="myRedButton" style="width:50%;height:35px;display:none;"  >
         </td></tr>
     </table>
 </form>
 
 
 </br>
-
-
-<!-- <form action="admin.php?page=dld_manage_facebook_reviews" method="post" enctype="multipart/form-data">
-    <table>
-        <tr><td colspan="2">
-            <hr style="width:80%;" align="left">
-            <h2><strong>Show All Reviews:</strong></h2>
-        </td></tr>
-        <tr><td colspan="2">
-            <input type="submit" value="Show All Reviews" name="submit"  id="btnShowAllReviews" class="myButton" style="width:600px;height:35px;"  ></strong>
-            <textarea class="DROrderByPostID" name="DROrderByPostID" id="DROrderByPostID1" style="width:100%;height:175px;"></textarea>
-            <input type="text" name="showAllReviews" id="txtShowAllReviews" style="display:none;" value="yes">
-        </td></tr>
-    </table>
-</form> -->
 
 
 
@@ -186,10 +181,8 @@ function dld_setup_facebook_reviews_admin_page(){
             <h2><strong>Save New Review Order:</strong></h2>
         </td></tr>
         <tr><td colspan="2">
-            Active Reviews: </br>
-            <textarea class="DROrderByPostID" name="DROrderByPostID" id="DROrderByPostID" style="width:100%;height:175px;"></textarea>
-            </br>Inactive Reviews: </br>
-            <textarea class="DRInactiveByPostID" name="DRInactiveByPostID" id="DRInactiveByPostID" style="width:100%;height:175px;"></textarea>
+            <textarea class="DROrderByPostID" name="DROrderByPostID" id="DROrderByPostID" style="width:100%;height:175px;display:none;"></textarea>
+            <textarea class="DRInactiveByPostID" name="DRInactiveByPostID" id="DRInactiveByPostID" style="width:100%;height:175px;display:none;"></textarea>
             <input type="text" name="saveReviewOrder" id="txtSaveReviewOrder" style="display:none;" value="yes">
             <input type="submit" value="Save New Review Order" name="submit"  id="btnSaveReviewOrder" class="myButton" style="width:600px;height:35px;"  ></strong>
         </td></tr>

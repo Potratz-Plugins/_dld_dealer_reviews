@@ -171,6 +171,7 @@ function initMap() {
              var rating = document.getElementById('rating');
               var allGoogleReviews = document.getElementById('textAreaGoogleReviews');
               var showThereAreResults = document.getElementById('spanGoogleReviewsResults');
+              var showThereAreResultsAfter = document.getElementById('spanGoogleReviewsResultsAfter');
               var saveGoogleReviews = document.getElementById('btnSaveGoogleReviews');
 
 
@@ -208,8 +209,9 @@ function initMap() {
                     }
                 }
                 count--;
-                    saveGoogleReviews.style.display = 'block';
-                    showThereAreResults.innerHTML = count + " Google reviews retrived.</br></br>  Please click 'Save New Google Reviews' to store them.";
+                    saveGoogleReviews.style.display = 'inline';
+                    showThereAreResults.innerHTML = "</br></br>" + count + " Google reviews retrieved.</br></br>  To save, please click:";
+                    
         });
     }
     </script>

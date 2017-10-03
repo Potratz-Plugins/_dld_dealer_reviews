@@ -71,11 +71,15 @@ $(document).ready(function () {
     });
     
     // ONCLICK radio button Visible / Do Not Show is clicked
-    $( "#btnSaveReviewOrderTest" ).click(function( ) {
+    $( "#btnShowAllReviews" ).click(function( ) {
         alert('hi');
-        console.log('ALL IDs : ');
-        console.log(activeReviewIDs);
+        $( "#DROrderByPostID" ).val('');
+        submit();
+       // console.log('ALL IDs : ');
+       // console.log(activeReviewIDs);
     });
+    
+
     
     
 });
@@ -84,8 +88,13 @@ $(document).ready(function () {
 function logReviewOrder(){
     // var allReviews = document.getElementsByName("fname");
     // alert('sorted');
+
+    // reset text areas for active and inactive ids
      $( "#DROrderByPostID" ).val('');
+     $( "#DRInactiveByPostID" ).val('');
+    // create arrays to hold active/inactive ids
     activeReviewIDs = [];
+    inactiveReviewIDs = [];
     
    
 
@@ -93,10 +102,15 @@ function logReviewOrder(){
         var thisPostID = $(this).find(".DealerReviewPostId").val();
         var parentClass = $(this).parent().attr('class');
         
-
+        // IF the review is not inactive, push to activeReviewIDs array, add id to text area for active ids, plus comma
         if(parentClass != 'ulSortableInactive'){
             activeReviewIDs.push(thisPostID);
              $( "#DROrderByPostID" ).val($("#DROrderByPostID").val()  + thisPostID + ',');
+        }
+        // ELSE review is inactive, push to inactiveReviewIDs array, add to inactive reviews text area
+        else {
+            inactiveReviewIDs.push(thisPostID);
+            $( "#DRInactiveByPostID" ).val($("#DRInactiveByPostID").val()  + thisPostID + ',');
         }
         
         
@@ -116,6 +130,13 @@ function logReviewOrder(){
       if(textAreaValue.length > 0){
          var textAreaValueTrimLastComma = textAreaValue.substring(0,textAreaValue.length - 1);
           $("#DROrderByPostID").val(textAreaValueTrimLastComma);
+      }
+
+      var textAreaValueInactive = $( "#DRInactiveByPostID" ).val();
+      //REMOVE TRAILING COMMA
+      if(textAreaValueInactive.length > 0){
+         var textAreaInactiveValueTrimLastComma = textAreaValueInactive.substring(0,textAreaValueInactive.length - 1);
+          $("#DRInactiveByPostID").val(textAreaInactiveValueTrimLastComma);
       }
       
     //   console.log('ALL IDs : ');

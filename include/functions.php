@@ -216,7 +216,7 @@ function initMap() {
 
 
  function dld_dealer_reviews_show_all_on_page_template($a_reorderReviewsArray = null) {
-    $a_allReviewsFromDB = dld_facebook_get_all_reviews_raw_data();
+    $a_allReviewsFromDB = dld_dealer_reviews_get_all_reviews_raw_data();
     //  pre_var_dump($a_allReviewsFromDB);
     $a_allReviewsAsDealerReviews = array();
 
@@ -251,20 +251,32 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData) {
     }
    
     
-    $a_allReviewsFromDB = dld_facebook_get_all_reviews_raw_data();
+    $a_allReviewsFromDB = dld_dealer_reviews_get_all_reviews_raw_data();
 
     // pre_var_dump($a_allReviewsFromDB, 'all reviews from db');
+    $a_allDealerReviews = array();
+    $a_activeReviewsSorted = array();
     $a_inactiveReviews = array();
+    $a_newReviews = array();
 
-    TODO: // get array (option value)
-	if ( get_option( 'DealerReviewsActivePostIds') == false ) {
+    // GET ACTIVE / INACTIVE REVIEW POST ID's
+    // get array of active reviews post ids, which is also used to display the order
+    if ( get_option( 'DealerReviewsActivePostIds') == false ) {
 		add_option( 'DealerReviewsActivePostIds', '', null, 'no');
 	}
     $s_postIdsOfActiveReviews = get_option('DealerReviewsActivePostIds');
-    // echo $s_postIdsOfActiveReviews;
+    $a_postIdsActive = explode(",", $s_postIdsOfActiveReviews);
+    // echo $DealerReviewsActivePostIds;
 
-    echo '<h2><strong>Active Reviews:</strong></h2>';
-    echo '<ul id="sortable" class="ulSortable">';
+    // get array of inactive review post ids, signifying they are not a new review and therefore will not be displayed as active
+	if ( get_option( 'DealerReviewsInactivePostIds') == false ) {
+		add_option( 'DealerReviewsInactivePostIds', '', null, 'no');
+	}
+    $s_postIdsOfInactiveReviews = get_option('DealerReviewsInactivePostIds');
+    // echo $s_postIdsOfInactiveReviews;
+
+
+   
 
     // DISPLAY ALL DATABASE STORED REVIEWS
     foreach($a_allReviewsFromDB->posts as $o_ReviewData){
@@ -284,18 +296,58 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData) {
         // CREATE DealerReviews object
         $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, $s_review_type, $s_author_id, $i_postID);
 
-        // TODO: if post id is in array, show review, else add it to array of inactive reviews 
-
+        // TODO: add active reviews to array in in order of DealerReviewsActivePostIds
+        // IF the post id is found in array of active review post id's
+        
         if(strpos($s_postIdsOfActiveReviews, $s_postIDString) !== false){
-            $o_Review->show_dealer_review_sortable(true);
-        } else{
+            $a_activeReviews[] = $o_Review;
+        } 
+        // ELSE IF the post id is found in array of inactive review post id's
+        else if(strpos($s_postIdsOfInactiveReviews, $s_postIDString) !== false) {
             // Add this DealerReview object to inactive reviews array
             $a_inactiveReviews[] = $o_Review;
         }
+        // ELSE the post id has not been found in active or inactive reviews, therefore this is a new review. 
+        else{
+            $a_newReviews[] = $o_Review;
+        }
     }
 
-   echo '</ul>';
-  echo '<hr  style="width:80%;" align="left">';
+    foreach($a_postIdsActive as $s_postIdActive){
+            foreach($a_activeReviews as $a_activeReview){
+                if($s_postIdActive == $a_activeReview->id){
+                    $a_activeReviewsSorted[] = $a_activeReview;
+                }
+            }
+        }
+
+    $b_isFirstNew = true;
+    $b_isFirstActive = true;
+    // ************* DISPLAY REVIEWS **************
+    // NEW REVIEWS
+    echo '<ul id="sortable" class="ulSortable">';
+    foreach($a_newReviews as $o_newReview){
+        if($b_isFirstNew){
+            echo '<h2><strong>New Reviews:</strong></h2>';
+            $b_isFirstNew = false;
+        }
+        $o_newReview->show_dealer_review_sortable(true);
+    }
+
+    // ACTIVE REVIEWS
+    foreach($a_activeReviewsSorted as $o_activeReview){
+        if($b_isFirstActive){
+            echo '<hr  style="width:100%;" align="left">';
+            echo '<h2><strong>Active Reviews:</strong></h2>';
+            $b_isFirstActive = false;
+        }
+        $o_activeReview->show_dealer_review_sortable(true);
+    }
+    echo '</ul>';
+    echo '<hr  style="width:80%;" align="left">';
+
+
+    // INACTIVE REVIEWS
    echo '<h2><strong>Inactive Reviews:</strong></h2>';
    echo '<ul id="sortableInactive" class="ulSortableInactive">';
 
@@ -444,7 +496,7 @@ return $NewStr;
 
 
 
-function dld_facebook_get_all_reviews_raw_data(){
+function dld_dealer_reviews_get_all_reviews_raw_data(){
     $a_allReviewsFromDB = 
         new WP_Query(
                 array(
@@ -459,8 +511,9 @@ return $a_allReviewsFromDB;
 
 
 
-function dld_save_new_review_order($s_postIdsActiveReviews){
+function dld_save_new_review_order($s_postIdsActiveReviews, $s_postIdsInactiveReviews){
     update_option( 'DealerReviewsActivePostIds', $s_postIdsActiveReviews, null );
+    update_option( 'DealerReviewsInactivePostIds', $s_postIdsInactiveReviews, null );
 }
 
 

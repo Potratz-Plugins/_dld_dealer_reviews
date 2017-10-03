@@ -144,7 +144,7 @@ function dld_setup_facebook_reviews_admin_page(){
     <table>
         <tr><td colspan="2">
             <input type="text" name="refreshGoogleReviews" id="txtRefreshGoogleReviews" style="display:none;" value="yes">
-            <textarea class="textAreaGoogleReviews" name="PostedGoogleReviews" id="textAreaGoogleReviews" style="width:100%;height:375px;"></textarea>
+            <textarea class="textAreaGoogleReviews" name="PostedGoogleReviews" id="textAreaGoogleReviews" style="width:100%;height:375px;display:none;"></textarea>
         </td></tr>
         <tr><td colspan="2">
             <input type="submit" value="Get New Google Reviews" name="submit"  id="btnRefreshGoogleReviews" class="myRedButton" style="width:600px;height:35px;"  ></strong>
@@ -157,12 +157,34 @@ function dld_setup_facebook_reviews_admin_page(){
 
 </br>
 
-<hr style="width:80%;" align="left">
-<h2><strong>Save New Review Order:</strong></h2>
+
+<!-- <form action="admin.php?page=dld_manage_facebook_reviews" method="post" enctype="multipart/form-data">
+    <table>
+        <tr><td colspan="2">
+            <hr style="width:80%;" align="left">
+            <h2><strong>Show All Reviews:</strong></h2>
+        </td></tr>
+        <tr><td colspan="2">
+            <input type="submit" value="Show All Reviews" name="submit"  id="btnShowAllReviews" class="myButton" style="width:600px;height:35px;"  ></strong>
+            <textarea class="DROrderByPostID" name="DROrderByPostID" id="DROrderByPostID1" style="width:100%;height:175px;"></textarea>
+            <input type="text" name="showAllReviews" id="txtShowAllReviews" style="display:none;" value="yes">
+        </td></tr>
+    </table>
+</form> -->
+
+
+
 <form action="admin.php?page=dld_manage_facebook_reviews" method="post" enctype="multipart/form-data">
     <table>
         <tr><td colspan="2">
-            <textarea class="DROrderByPostID" name="DROrderByPostID" id="DROrderByPostID" style="width:100%;height:175px;display:none;"></textarea>
+            <hr style="width:80%;" align="left">
+            <h2><strong>Save New Review Order:</strong></h2>
+        </td></tr>
+        <tr><td colspan="2">
+            Active Reviews: </br>
+            <textarea class="DROrderByPostID" name="DROrderByPostID" id="DROrderByPostID" style="width:100%;height:175px;"></textarea>
+            </br>Inactive Reviews: </br>
+            <textarea class="DRInactiveByPostID" name="DRInactiveByPostID" id="DRInactiveByPostID" style="width:100%;height:175px;"></textarea>
             <input type="text" name="saveReviewOrder" id="txtSaveReviewOrder" style="display:none;" value="yes">
             <input type="submit" value="Save New Review Order" name="submit"  id="btnSaveReviewOrder" class="myButton" style="width:600px;height:35px;"  ></strong>
         </td></tr>
@@ -190,10 +212,10 @@ $s_newAppID = htmlspecialchars($_POST["txtAppID"]);
 $s_newAppSecret = htmlspecialchars($_POST["txtAppSecret"]);
 $s_newMinReview = htmlspecialchars($_POST["selectMinimumReview"]);
 $s_postIdsActiveReviews = htmlspecialchars($_POST["DROrderByPostID"]);
+$s_postIdsInactiveReviews = htmlspecialchars($_POST["DRInactiveByPostID"]);
 
-    
 
-echo "<h1>".$s_postIdsActiveReviews."</h1>";
+
 
 if(strlen($s_newPageID) > 0 ){
     update_option('FacebookPageIDOptionValue', $s_newPageID, false);
@@ -272,7 +294,7 @@ if ($s_RefreshGoogleReviews == 'yes'){
 $s_saveReviewOrder = htmlspecialchars($_POST["saveReviewOrder"]);
 if ($s_saveReviewOrder == 'yes'){
 
-    dld_save_new_review_order($s_postIdsActiveReviews);
+    dld_save_new_review_order($s_postIdsActiveReviews, $s_postIdsInactiveReviews);
         echo "
         <script>
             document.getElementById('txtSaveReviewOrder').value = 'no';
@@ -289,6 +311,26 @@ if ($s_saveReviewOrder == 'yes'){
     </script>";
 }
 
+
+// $s_showAllReviews= htmlspecialchars($_POST["showAllReviews"]);
+// if ($s_showAllReviews == 'yes'){
+
+//     dld_save_new_review_order($s_postIdsActiveReviews);
+//         echo "
+//         <script>
+//             document.getElementById('txtShowAllReviews').value = 'no';
+//       //   document.getElementById('btnShowAllReviews').click();
+//             var x = false;
+//         </script>";
+        
+    
+    
+// } else {
+//     echo "
+//     <script>
+//         document.getElementById('txtShowAllReviews').value = 'yes';
+//     </script>";
+// }
 
 
 

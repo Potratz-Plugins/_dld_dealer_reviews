@@ -323,6 +323,7 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData) {
 
     $b_isFirstNew = true;
     $b_isFirstActive = true;
+    $b_isFirstInactive = true;
     // ************* DISPLAY REVIEWS **************
     // NEW REVIEWS
     echo '<ul id="sortable" class="ulSortable">';
@@ -348,10 +349,14 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData) {
 
 
     // INACTIVE REVIEWS
-   echo '<h2><strong>Inactive Reviews:</strong></h2>';
    echo '<ul id="sortableInactive" class="ulSortableInactive">';
 
     foreach($a_inactiveReviews as $o_inactiveReview){
+        if($b_isFirstActive){
+            echo '<hr  style="width:100%;" align="left">';
+            echo '<h2><strong>Inactive Reviews:</strong></h2>';
+            $b_isFirstActive = false;
+        }
         $o_inactiveReview->show_dealer_review_sortable();
     }
    echo '</ul>';
@@ -398,10 +403,10 @@ function dld_process_google_reviews_from_string($s_rawData){
             }
 
               //Create unique author id / post_author by concatenating time string and text length
-              pre_var_dump($s_time_string, 'time string');
-              pre_var_dump($s_length_of_text, 'text len');
+            //   pre_var_dump($s_time_string, 'time string');
+            //   pre_var_dump($s_length_of_text, 'text len');
               $s_author_id = $s_time_string.$s_length_of_text;
-              pre_var_dump($s_author_id, 'concat auth id string');
+            //   pre_var_dump($s_author_id, 'concat auth id string');
   
 
             // CREATE DealerReviews object

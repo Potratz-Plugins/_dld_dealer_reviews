@@ -212,37 +212,50 @@ protected function reviews_get_stars($rating) {
 
    public function dld_dealer_reviews_save_to_db(){ 
 
-    // echo '<h1>TRYING TO SAVE</h1>';
+    // ONLY INSERT RECORD IF IT DOES NOT ALREADY EXIST
+    $a_allReviewsFromDB = array();
+    $a_author_ids = array();
+    $a_allReviewsFromDB = dld_dealer_reviews_get_all_reviews_raw_data();
+    foreach($a_allReviewsFromDB->posts as $o_ReviewData){
+                $a_author_ids[] = $o_ReviewData->post_mime_type;
+    }
+    if(!in_array($this->authorId, $a_author_ids)){
+        // echo '<h1>TRYING TO SAVE</h1>';
         //pre_var_dump($this, 'THIS REVIEW');
         // $i_postID = $this->id;
       //  $b_is_active = $this->active;
-        $s_image_url = $this->imageUrl;
-        $s_author_id = $this->authorId;
-        // $s_reviewer_image = '<img src="'.$s_image_url.'" class="photoDisplay"/>'; 
-        $s_reviewer_name = $this->reviewerName;
-        $i_numeric_rating = $this->numericRating;
-        $s_review_text = $this->reviewText;
-        $s_review_type = $this->reviewType;
+      $s_image_url = $this->imageUrl;
+      $s_author_id = $this->authorId;
+      // $s_reviewer_image = '<img src="'.$s_image_url.'" class="photoDisplay"/>'; 
+      $s_reviewer_name = $this->reviewerName;
+      $i_numeric_rating = $this->numericRating;
+      $s_review_text = $this->reviewText;
+      $s_review_type = $this->reviewType;
 
-        $a_CreateRating = array(
-                'ID'           	=> '',
-                'post_mime_type'=> $s_author_id,
-                'post_status' 	=> $s_review_type,
-                'post_title'	=> $s_image_url,
-                'post_excerpt'   => $s_reviewer_name,
-                'comment_status'=> $i_numeric_rating,
-                'post_content'	=> $s_review_text,
-                'post_type'		=> 'dealerreview'
-            );
-        $s_NewlyInsertedPostID = wp_insert_post( $a_CreateRating );
+      $a_CreateRating = array(
+              'ID'           	=> '',
+              'post_mime_type'=> $s_author_id,
+              'post_status' 	=> $s_review_type,
+              'post_title'	=> $s_image_url,
+              'post_excerpt'   => $s_reviewer_name,
+              'comment_status'=> $i_numeric_rating,
+              'post_content'	=> $s_review_text,
+              'post_type'		=> 'dealerreview'
+          );
+      $s_NewlyInsertedPostID = wp_insert_post( $a_CreateRating );
+  
+      if ( $s_NewlyInsertedPostID != false && $s_NewlyInsertedPostID > 0 ) {
+          // echo '<h1>saving to db</h1>';
+          return $s_NewlyInsertedPostID;
+      } else {
+          echo '</br>*** error saving to db</br>';
+          return false;
+      }
+    }  else {
+        return false;
+    }
+
     
-        if ( $s_NewlyInsertedPostID != false && $s_NewlyInsertedPostID > 0 ) {
-            // echo '<h1>saving to db</h1>';
-            return $s_NewlyInsertedPostID;
-        } else {
-            echo '<h1>error saving to db</h1>';
-            return false;
-        }
     }
 
   

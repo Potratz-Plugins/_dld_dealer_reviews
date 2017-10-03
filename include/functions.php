@@ -86,8 +86,9 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
  foreach($json->data as $record){
     // pre_var_dump($record, 'a reacord');
      // only show review if above or equal to minimum review number (set as option)
-     if($record->rating >= $i_minimum_review_num){ 
-        
+     if(intval($record->rating) >= intval($i_minimum_review_num)){ 
+        pre_var_dump(intval($record->rating), 'intval record rating : ');
+        pre_var_dump($i_minimum_review_num, 'i_minimum_review_num');
 
         // $o_Review->order = 9;
         // echo $o_Review->order;
@@ -100,7 +101,7 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
          $s_fb_name = $record->reviewer->name;
          $i_fb_rating = $record->rating;
          $s_author_id = $record->reviewer->id;
-         pre_var_dump($s_author_id);
+         pre_var_dump($s_author_id, 'author id');
          if (isset($record->review_text)) { 
              $s_fb_review_text = RemoveBS($record->review_text);
          } else {
@@ -163,6 +164,10 @@ function initMap() {
           }
 
           // DISPLAY
+            var sel = document.getElementById('selectMinimumReview');
+            var opt = sel.options[sel.selectedIndex];
+            var minimumRating =  opt.value;
+
              var rating = document.getElementById('rating');
               var allGoogleReviews = document.getElementById('textAreaGoogleReviews');
               var showThereAreResults = document.getElementById('spanGoogleReviewsResults');
@@ -189,7 +194,7 @@ function initMap() {
                 console.log(rev);
                 var count = 1;
 				for (i = 0; i < 5; i++) {
-					if(rev[i]['rating'] >= 3) {
+					if(rev[i]['rating'] >= minimumRating) {
                         
                         var reviewNo = count.toString();
                         allGoogleReviews.innerHTML += 
@@ -244,7 +249,7 @@ function initMap() {
 
 
 
-function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData) {
+function dld_dealer_reviews_show_all_from_db_sortable($i_minimum_review_num, $s_googleReviewsRawData) {
     if(strlen($s_googleReviewsRawData) > 0){
         // SAVE ALL GOOGLE REVIEWS TO DB
         dld_process_google_reviews_from_string($s_googleReviewsRawData);
@@ -299,11 +304,11 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData) {
         // TODO: add active reviews to array in in order of DealerReviewsActivePostIds
         // IF the post id is found in array of active review post id's
         
-        if(strpos($s_postIdsOfActiveReviews, $s_postIDString) !== false){
+        if(strpos($s_postIdsOfActiveReviews, $s_postIDString) !== false && intval($i_fb_rating) >= $i_minimum_review_num){
             $a_activeReviews[] = $o_Review;
         } 
         // ELSE IF the post id is found in array of inactive review post id's
-        else if(strpos($s_postIdsOfInactiveReviews, $s_postIDString) !== false) {
+        else if(strpos($s_postIdsOfInactiveReviews, $s_postIDString) !== false || intval($i_fb_rating) < $i_minimum_review_num) {
             // Add this DealerReview object to inactive reviews array
             $a_inactiveReviews[] = $o_Review;
         }
@@ -323,7 +328,6 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData) {
 
     $b_isFirstNew = true;
     $b_isFirstActive = true;
-    $b_isFirstInactive = true;
     // ************* DISPLAY REVIEWS **************
     // NEW REVIEWS
     echo '<ul id="sortable" class="ulSortable">';
@@ -350,13 +354,10 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData) {
 
     // INACTIVE REVIEWS
    echo '<ul id="sortableInactive" class="ulSortableInactive">';
+   echo '<hr  style="width:100%;" align="left">';
+   echo '<h2><strong>Inactive Reviews:</strong></h2>';
 
     foreach($a_inactiveReviews as $o_inactiveReview){
-        if($b_isFirstActive){
-            echo '<hr  style="width:100%;" align="left">';
-            echo '<h2><strong>Inactive Reviews:</strong></h2>';
-            $b_isFirstActive = false;
-        }
         $o_inactiveReview->show_dealer_review_sortable();
     }
    echo '</ul>';

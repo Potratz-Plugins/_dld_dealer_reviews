@@ -12,13 +12,21 @@
 function dld_facebook_reviews_admin_menu() {
 
         add_menu_page (
-        'Facebook Reviews Plugin Page',					// string $page_title
-        'Facebook Reviews Plugin',					// string $menu_title
-        'read',							// string $capability
-        'dld_manage_facebook_reviews',		// string $menu_slug
-        'dld_facebook_reviews_init',		// callback $function
-        'dashicons-admin-page',			// string $icon_url
-        '94'							// int $position
+            'Facebook Reviews Plugin Page',					// string $page_title
+            'Facebook Reviews Plugin',					// string $menu_title
+            'read',							// string $capability
+            'dld_manage_facebook_reviews',		// string $menu_slug
+            'dld_facebook_reviews_init',		// callback $function
+            'dashicons-admin-page',			// string $icon_url
+            '94'							// int $position
+        );
+
+        add_menu_page (
+            'Facebook Reviews Plugin Page2',					// string $page_title
+            null ,					// string $menu_title
+            'read',							// string $capability
+            'dld_manage_facebook_reviews2',		// string $menu_slug
+            'dld_facebook_handle_postbacks'	// callback $function
         );
 
 } add_action( 'admin_menu', 'dld_facebook_reviews_admin_menu' );

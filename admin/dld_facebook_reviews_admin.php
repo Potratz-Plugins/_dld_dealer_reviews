@@ -40,6 +40,7 @@ function dld_setup_facebook_reviews_admin_page(){
     $s_appSecret = get_option('FacebookAppSecretOptionValue');
     $s_llAccessToken = get_option('FacebookLLAccessTokenOptionValue');
     $i_minimum_review_num = intval(get_option('FacebookMinimumReviewOptionValue'));
+    // echo '<h1>min rev # : '.$i_minimum_review_num.'</h1>';
     $i_mrn = $i_minimum_review_num;
     
 
@@ -65,6 +66,7 @@ function dld_setup_facebook_reviews_admin_page(){
             PAGE ID : 
         </td><td>
             <strong><input type="text" name="txtPageID" id="txtPageID" style="width:400px;" value="<?php echo $s_pageID; ?>"></strong>
+            <!-- <input type="text" name="changeFBConnectData" id="txtchangeFBConnectData" style="width:400px;display:hidden;" value="yes"> -->
         </td></tr>
         <tr><td>
             APP ID : 
@@ -76,11 +78,14 @@ function dld_setup_facebook_reviews_admin_page(){
         </td><td>
             <strong><input type="text" name="txtAppSecret" id="txtAppSecret" style="width:400px;" value="<?php echo $s_appSecret; ?>"></strong>
         </td></tr>
+        <tr><td colspan="2" >
+            <h2><strong>Set Minimum Review:</strong></h2>
+        </td></tr>
         <tr><td>
             MINIMUM REVIEW 0-5 : 
         </td><td>
             <strong>
-            <select name="selectMinimumReview" >
+            <select name="selectMinimumReview" id="selectMinimumReview">
                 <?php
                 if($i_mrn == 0) {?>
                     <option value="0" selected="selected">Show All</option>
@@ -116,7 +121,7 @@ function dld_setup_facebook_reviews_admin_page(){
          </td></tr>
     </table>
                 </br>
-    <input type="submit" value="Update Facebook Connect Data" name="submit"  id="btnUploadFile" class="myButton" style="width:600px;height:35px;"  ></strong>
+    <input type="submit" value="Update Minimum Review / Connect Data" name="submit"  id="btnUpdateFBConnectData" class="myButton" style="width:600px;height:35px;"  ></strong>
     <div class="errorDiv" style="color:red;font-weight:bold;" style="display:none"></div>
 </form>
 </br>
@@ -200,36 +205,36 @@ function dld_setup_facebook_reviews_admin_page(){
             $s_googleReviews = htmlspecialchars($_POST["PostedGoogleReviews"]);
         }
         // echo "Google Reviews : ".$s_googleReviews;
-        dld_dealer_reviews_show_all_from_db_sortable($s_googleReviews);
+        dld_dealer_reviews_show_all_from_db_sortable($i_minimum_review_num, $s_googleReviews);
     ?>
 </div>
 
 <?php
+
+
+$s_postIdsActiveReviews = htmlspecialchars($_POST["DROrderByPostID"]);
+$s_postIdsInactiveReviews = htmlspecialchars($_POST["DRInactiveByPostID"]);
+
+
 
 $b_updatedValue = false;
 $s_newPageID = htmlspecialchars($_POST["txtPageID"]);
 $s_newAppID = htmlspecialchars($_POST["txtAppID"]);
 $s_newAppSecret = htmlspecialchars($_POST["txtAppSecret"]);
 $s_newMinReview = htmlspecialchars($_POST["selectMinimumReview"]);
-$s_postIdsActiveReviews = htmlspecialchars($_POST["DROrderByPostID"]);
-$s_postIdsInactiveReviews = htmlspecialchars($_POST["DRInactiveByPostID"]);
-
-
-
-
-if(strlen($s_newPageID) > 0 ){
+if(strlen($s_newPageID) > 0 && get_option('FacebookPageIDOptionValue') != $s_newPageID){
     update_option('FacebookPageIDOptionValue', $s_newPageID, false);
     $b_updatedValue = true;
 }
-if(strlen($s_newAppID) > 0 ){
+if(strlen($s_newAppID) > 0 && get_option('FacebookAppIDOptionValue') != $s_newAppID){
     update_option('FacebookAppIDOptionValue', $s_newAppID, false);
     $b_updatedValue = true;
 }
-if(strlen($s_newAppSecret) > 0 ){
+if(strlen($s_newAppSecret) > 0 && get_option('FacebookAppSecretOptionValue') != $s_newAppSecret){
     update_option('FacebookAppSecretOptionValue', $s_newAppSecret, false);
     $b_updatedValue = true;
 }
-if(strlen($s_newMinReview) > 0 ){
+if(strlen($s_newMinReview) > 0 && get_option('FacebookMinimumReviewOptionValue') != $s_newMinReview){
     update_option('FacebookMinimumReviewOptionValue', $s_newMinReview, false);
     $b_updatedValue = true;
 }
@@ -310,6 +315,28 @@ if ($s_saveReviewOrder == 'yes'){
         document.getElementById('txtSaveReviewOrder').value = 'yes';
     </script>";
 }
+
+
+// TEST - MIGHT NOT NEED
+// $s_saveReviewOrder = htmlspecialchars($_POST["changeFBConnectData"]);
+// if ($s_saveReviewOrder == 'yes'){
+
+//     dld_save_new_review_order($s_postIdsActiveReviews, $s_postIdsInactiveReviews);
+//         echo "
+//         <script>
+//             document.getElementById('txtSaveReviewOrder').value = 'no';
+//          document.getElementById('btnUpdateFBConnectData').click();
+//             var x = false;
+//         </script>";
+        
+    
+    
+// } else {
+//     echo "
+//     <script>
+//         document.getElementById('txtSaveReviewOrder').value = 'yes';
+//     </script>";
+// }
 
 
 // $s_showAllReviews= htmlspecialchars($_POST["showAllReviews"]);

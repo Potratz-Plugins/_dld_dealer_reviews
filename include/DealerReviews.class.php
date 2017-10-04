@@ -102,100 +102,112 @@ public function show_dealer_review_sortable($b_is_active = false) {
                 echo '</li>';
                         
     }
- // THIS FUNCTION for displaying in admin as sortable list
-// public function show_dealer_review_sortable1() {  
 
-//             $i_postID = $this->id;
-//             $b_is_active = $this->active;
-//             $s_image_url = $this->imageUrl;
-//             $s_reviewer_image_display = '<img src="'.$s_image_url.'" class="photoDisplay"/>'; 
-//             $s_reviewer_name = $this->reviewerName;
-//             $i_numeric_rating = $this->numericRating;
-//             $s_review_text = $this->reviewText;
-        
-//             echo '
-//             <table style="width:100%">
-//                 <tr><td style="width:20%">';
-            
-//             if(true){
-//                 echo '
-//                     <input type="radio" name="showReview'.$i_postID.'" value="Show" checked="checked"> Visible </input>
-//                     <input type="radio" name="showReview'.$i_postID.'" value="Hide"> Do Not Show</br>
-//                 ';
-//             } else {
-//                 echo '
-//                     <input type="radio" name="showReview'.$i_postID.'" value="Show" > Visible </input>
-//                     <input type="radio" name="showReview'.$i_postID.'" value="Hide" checked="checked"> Do Not Show</br>
-//                 ';
-//             }
-//                     echo '
-//                     </br>'.$s_reviewer_image_display.'
-//                 </td><td>';
-//                     echo '
-//                     <strong>'.$s_reviewer_name.'</strong></br></br>';
-//                     $this->reviews_get_stars($i_numeric_rating);
-//                     echo '
-//                     </br></br>'.$s_review_text.'</br></br>
-//                     POST ID : &nbsp;&nbsp;&nbsp;&nbsp;
-//                     <span style="font-size:16px">'.$i_postID.'</span>
-//                 </td></tr>
-//             </table>
-//                     ';
-// }
 
-// THIS FUNCTION for displaying in site
-public function show_dealer_review() {  
-    
-                $i_postID = $this->id;
-                //$b_is_active = $this->active;
-                $s_image_url = $this->imageUrl;
-                $s_reviewer_image_display = '<img src="'.$s_image_url.'" class="photoDisplay"/>'; 
-                $s_reviewer_name = $this->reviewerName;
-                $i_numeric_rating = $this->numericRating;
-                $s_review_text = $this->reviewText;
-        
-        
-                echo '
-                <div class="fb_reviews" style="width:600px;padding:15px;">
-                    <table style="width:100%">
-                        <tr><td style="padding:10px;width:25%;">';
-    
-                    
-    
-                if(true){
-                    echo '
-                            <input type="radio" name="showReview'.$i_postID.'" value="Show" checked="checked"> Visible </input>
-                        </td><td>
-                            <input type="radio" name="showReview'.$i_postID.'" value="Hide"> Do Not Show
-                        </td></tr>';
-                } else {
-                    echo '
-                            <input type="radio" name="showReview'.$i_postID.'" value="Show" > Visible </input>
-                        </td><td>
-                            <input type="radio" name="showReview'.$i_postID.'" value="Hide" checked="checked"> Do Not Show
-                        </td></tr>';
-                }
-                echo    '
-                        <tr><td style="width:25%">';
-                            echo $s_reviewer_image_display.'
-                        </td>
-                        <td style="text-align:left">';
-                            echo '<strong>'.$s_reviewer_name.'</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</br>';
-                            $this->reviews_get_stars($i_numeric_rating);
-                            echo '
-                        </td></tr>
-                        <tr><td colspan="2" style="padding:10px">
-                            <span style="font-size:16px">'.$s_review_text.'</span>
-                        </td></tr>
-                        <tr><td style="padding:10px;font-size:16px">
-                            POST ID : 
-                        </td><td>
-                            <span style="font-size:16px">'.$i_postID.'</span>
-                        </td></tr>
-                    </table>
-                </div>';
-               
+
+public function show_dealer_review_on_page(){
+    $i_postID = $this->id;
+    $s_image_url = $this->imageUrl;
+    $s_reviewer_image_display = '<img src="'.$s_image_url.'" class="photoDisplay"/>'; 
+    $s_reviewer_name = $this->reviewerName;
+    $i_numeric_rating = $this->numericRating;
+    $s_review_text = $this->reviewText;
+    $s_review_type = $this->reviewType;
+    $s_path_to_icons = plugins_url( '_dld_dealer_reviews/src/images/' );
+    $s_full_path_to_icon = $s_path_to_icons.$s_review_type;
+    $s_review_type_icon = '<img src="'.$s_full_path_to_icon.'.png" style="height:35px;width:35px;"/>'; 
+   
+
+    // THIS WAY IS SCOTTS
+    // echo "<div class='rev'>";
+    // echo "<div class='rev-content'>";
+    // echo "<i class='fa fa-quote-left' style='font-size:2rem;padding:10px 10px 0 10px;color:#888'></i>";
+    // echo $s_review_text;
+    // echo "<i class='fa fa-quote-right' style='font-size:2rem;padding:0 10px;color:#888'></i>";
+    // echo "<p style='margin-top:15px;'> - "; 
+    // echo $s_reviewer_name;
+    // echo "</p>";
+    // echo "</div>";
+    // echo "</div>";
+
+
+    // THIS WAY IS SCOTTS
+    echo "<div class='rev'>";
+    echo    "<div class='row'>";
+    echo        "<div class='col-lg-2'>";
+
+    echo            $s_reviewer_image_display.'</br>';
+   
+    echo        "</div>";
+    echo        "<div class='col-lg-10'>";
+              
+    if(strlen($s_review_text) > 0){
+        echo        "<i class='fa fa-quote-left' style='font-size:2rem;padding:10px 10px 0 10px;color:#888'></i>";
+        echo        "<span class='fb_reviews' >".$s_review_text."</span>";
+        echo        "<i class='fa fa-quote-right' style='font-size:2rem;padding:0 10px;color:#888'></i>";
     }
+ 
+    echo        "<p style='margin-top:15px;'>";
+    $this->reviews_get_stars($i_numeric_rating);
+    echo        '</br>'.$s_review_type_icon." - "; 
+    echo            '<span class="fb_reviews" style="font-weight:bold">'.$s_reviewer_name.'</span>';
+    echo        "</p>";
+    echo        "</div>";
+    echo    "</div>";
+    echo "</div>";
+
+
+    // USING TABLE - NOT STYLED
+    // echo '
+    // <section class="rev">
+    //     <div class="containter">
+    //         <div class="row"
+    //             <div class="col-lg-3 fb_reviews">';
+    //                 echo $s_reviewer_image_display.'
+    //             </div>
+    //             <div class="col-lg-9">';
+    //                 echo '<strong>'.$s_reviewer_name.'</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</br>';
+    //                 $this->reviews_get_stars($i_numeric_rating);
+    //                 echo '
+    //                 <span style="font-size:1.4em">'.$s_review_text.'</span>
+    //             </div>
+    //         </div>
+    //     </div>
+    // </section>';
+
+
+    // USING TABLE - NOT STYLED
+    // echo '
+    //                 <div class="fb_reviews" style="width:600px;padding:15px;">
+    //                     <table style="width:100%">
+    //                         <tr><td style="padding:10px;width:25%;">
+    //                         <tr><td style="width:25%">';
+    //                             echo $s_reviewer_image_display.'
+    //                         </td>
+    //                         <td style="text-align:left">';
+    //                             echo '<strong>'.$s_reviewer_name.'</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</br>';
+    //                             $this->reviews_get_stars($i_numeric_rating);
+    //                             echo '
+    //                         </td></tr>
+    //                         <tr><td colspan="2" style="padding:10px">
+    //                             <span style="font-size:16px">'.$s_review_text.'</span>
+    //                         </td></tr>
+    //                         <tr><td style="padding:10px;font-size:16px">
+    //                             POST ID : 
+    //                         </td><td>
+    //                             <span style="font-size:16px">'.$i_postID.'</span>
+    //                         </td></tr>
+    //                     </table>
+    //                 </div>';
+   
+   
+
+
+   
+    
+}
+
+
 
 protected function reviews_get_stars($rating) {
     foreach (array(1,2,3,4,5) as $val) {

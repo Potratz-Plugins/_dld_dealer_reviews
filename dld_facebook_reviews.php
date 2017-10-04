@@ -35,9 +35,13 @@ function dld_facebook_reviews_admin_menu() {
 
 // TODO: ACTIVATION script
 function dld_facebook_reviews_activate(){
-
+    $page = get_page_by_title('Dealer Reviews');
+    if( empty( $page )){
+        dld_facebook_reviews_add_template_page();
+    }
 }
 register_activation_hook( __FILE__, 'dld_facebook_reviews_activate' );
+
 
 // TODO: DEACTIVATION script
 function dld_facebook_reviews_deactivate(){
@@ -77,7 +81,7 @@ function dld_facebook_reviews_admin_enqueue_scripts() {
 
 // ADD connection to page template
 function dld_facebook_reviews_template( $page_template ){
-    if ( is_page( 'dealer_reviews' ) ) {
+    if ( is_page( 'dealer-reviews' ) ) {
         $page_template = dirname( __FILE__ ) . '/templates/template-reviews.php';
     }
     return $page_template;
@@ -85,6 +89,18 @@ function dld_facebook_reviews_template( $page_template ){
  add_filter('page_template', 'dld_facebook_reviews_template' );
 
 
+// INSERT PAGE for plugin
+function dld_facebook_reviews_add_template_page(){
+    
+      $post = array(
+        'post_title'     => "Dealer Reviews", // The title of your post.
+        'post_type'      => "page",
+        'post_status'    => "publish"
+        );
+    
+      wp_insert_post( $post, $wp_error );
+    
+    }
 
 // FUNCTION - sets up main admin page
 function dld_facebook_reviews_init(){

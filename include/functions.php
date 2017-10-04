@@ -122,10 +122,11 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
          // SAVE REVIEW TO DB
 
          // pre_var_dump($o_Review, 'review : ');
+         // REMOVE - this array is unused
          $a_allFBReviews[] = $o_Review;
-         echo '<div class="fb_reviews" style="width:600px;padding:15px;">';
-         $o_Review->show_dealer_review();
-         echo '</div>';
+        //  echo '<div class="fb_reviews" style="width:600px;padding:15px;">';
+        //  $o_Review->show_dealer_review();
+        //  echo '</div>';
          }
     }
     // pre_var_dump($a_allFBReviews, 'all fb reviews : ');
@@ -222,14 +223,64 @@ function initMap() {
 
 
 
- function dld_dealer_reviews_show_all_on_page_template($a_reorderReviewsArray = null) {
-    $a_allReviewsFromDB = dld_dealer_reviews_get_all_reviews_raw_data();
-    //  pre_var_dump($a_allReviewsFromDB);
-    $a_allReviewsAsDealerReviews = array();
+//  function dld_dealer_reviews_show_all_on_page_template($a_reorderReviewsArray = null) {
+//     $a_allReviewsFromDB = dld_dealer_reviews_get_all_reviews_raw_data();
+//     //  pre_var_dump($a_allReviewsFromDB);
+//     $a_allReviewsAsDealerReviews = array();
 
+//     foreach($a_allReviewsFromDB->posts as $o_ReviewData){
+//         // pre_var_dump($o_ReviewData, 'SOME REVIEW DATA');
+//         // SET object variables
+//         $s_author_id = $o_ReviewData->post_mime_type;
+//         $s_review_type = $o_ReviewData->post_status;
+//         $s_fb_name = $o_ReviewData->post_excerpt;
+//         $s_image_url = $o_ReviewData->post_title;
+//         $i_fb_rating = $o_ReviewData->comment_status;  
+//         $s_fb_review_text = $o_ReviewData->post_content;
+//         $i_postID = $o_ReviewData->ID;
+
+//         // CREATE DealerReviews object
+//         $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, $s_review_type, $s_author_id, $i_postID );
+//         echo '<div class="fb_reviews" style="width:600px;padding:15px;">';
+//        $o_Review->show_dealer_review();
+//         echo '</div>';
+
+//         // Add this DealerReview object to array
+//         $a_allReviewsAsDealerReviews[] = $o_Review;
+//     }
+// }
+
+function dld_dealer_reviews_show_all_on_page_template() {
+   
+    // GET MINIMUM REVIEW RATING
+    if(get_option('FacebookMinimumReviewOptionValue') === false){
+        update_option('FacebookMinimumReviewOptionValue', '3', false);
+    }
+    $i_minimum_review_num = intval(get_option('FacebookMinimumReviewOptionValue'));
+    
+    $a_allReviewsFromDB = dld_dealer_reviews_get_all_reviews_raw_data();
+
+    // pre_var_dump($a_allReviewsFromDB, 'all reviews from db');
+    $a_activeReviews = array();
+    $a_activeReviewsSorted = array();
+
+    // GET ACTIVE / INACTIVE REVIEW POST ID's
+    // get array of active reviews post ids, which is also used to display the order
+    if ( get_option( 'DealerReviewsActivePostIds') === false ) {
+		add_option( 'DealerReviewsActivePostIds', '', null, 'no');
+    }
+    $a_postIdsActive = array();
+    $s_postIdsOfActiveReviews = get_option('DealerReviewsActivePostIds');
+    $a_postIdsActive = explode(",", $s_postIdsOfActiveReviews);
+    // echo $DealerReviewsActivePostIds;
+
+
+    // DISPLAY ALL DATABASE STORED REVIEWS
     foreach($a_allReviewsFromDB->posts as $o_ReviewData){
-        // pre_var_dump($o_ReviewData, 'SOME REVIEW DATA');
+
+       // pre_var_dump($o_ReviewData, 'review data');
         // SET object variables
+        // TODO: NOT IN post_type
         $s_author_id = $o_ReviewData->post_mime_type;
         $s_review_type = $o_ReviewData->post_status;
         $s_fb_name = $o_ReviewData->post_excerpt;
@@ -237,38 +288,72 @@ function initMap() {
         $i_fb_rating = $o_ReviewData->comment_status;  
         $s_fb_review_text = $o_ReviewData->post_content;
         $i_postID = $o_ReviewData->ID;
+        $s_postIDString = strval($i_postID);
 
         // CREATE DealerReviews object
-        $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, $s_review_type, $s_author_id, $i_postID );
-        echo '<div class="fb_reviews" style="width:600px;padding:15px;">';
-       $o_Review->show_dealer_review();
-        echo '</div>';
+        $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, $s_review_type, $s_author_id, $i_postID);
 
-        // Add this DealerReview object to array
-        $a_allReviewsAsDealerReviews[] = $o_Review;
+        // TODO: add active reviews to array in in order of DealerReviewsActivePostIds
+        // IF the post id is found in array of active review post id's
+        
+        if(strpos($s_postIdsOfActiveReviews, $s_postIDString) !== false){
+            $a_activeReviews[] = $o_Review;
+        } 
+    }
+
+    foreach($a_postIdsActive as $s_postIdActive){
+        foreach($a_activeReviews as $a_activeReview){
+            if($s_postIdActive == $a_activeReview->id){
+                $a_activeReviewsSorted[] = $a_activeReview;
+            }
+        }
+    }
+
+    // ************* DISPLAY REVIEWS **************
+    // NEW REVIEWS
+    echo '<hr  style="width:100%;" align="left">';
+    // ACTIVE REVIEWS
+    foreach($a_activeReviewsSorted as $o_activeReview){
+        $o_activeReview->show_dealer_review_on_page(true);
     }
 }
 
 
 
-function dld_dealer_reviews_show_all_from_db_sortable($i_minimum_review_num, $s_googleReviewsRawData) {
+
+
+
+
+
+
+
+
+
+function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData = '') {
+    // GET GOOGLE REVIEWS DATA IF PASSED IN
     if(strlen($s_googleReviewsRawData) > 0){
-        // SAVE ALL GOOGLE REVIEWS TO DB
+        // PROCESS AND SAVE ALL GOOGLE REVIEW DATA TO DB
         dld_process_google_reviews_from_string($s_googleReviewsRawData);
     }
-   
+
+    // GET MINIMUM REVIEW RATING
+    if(get_option('FacebookMinimumReviewOptionValue') === false){
+        update_option('FacebookMinimumReviewOptionValue', '3', false);
+    }
+    $i_minimum_review_num = intval(get_option('FacebookMinimumReviewOptionValue'));
     
     $a_allReviewsFromDB = dld_dealer_reviews_get_all_reviews_raw_data();
 
     // pre_var_dump($a_allReviewsFromDB, 'all reviews from db');
     $a_allDealerReviews = array();
+    $a_activeReviews = array();
     $a_activeReviewsSorted = array();
     $a_inactiveReviews = array();
     $a_newReviews = array();
 
     // GET ACTIVE / INACTIVE REVIEW POST ID's
     // get array of active reviews post ids, which is also used to display the order
-    if ( get_option( 'DealerReviewsActivePostIds') == false ) {
+    if ( get_option( 'DealerReviewsActivePostIds') === false ) {
 		add_option( 'DealerReviewsActivePostIds', '', null, 'no');
 	}
     $s_postIdsOfActiveReviews = get_option('DealerReviewsActivePostIds');
@@ -276,7 +361,7 @@ function dld_dealer_reviews_show_all_from_db_sortable($i_minimum_review_num, $s_
     // echo $DealerReviewsActivePostIds;
 
     // get array of inactive review post ids, signifying they are not a new review and therefore will not be displayed as active
-	if ( get_option( 'DealerReviewsInactivePostIds') == false ) {
+	if ( get_option( 'DealerReviewsInactivePostIds') === false ) {
 		add_option( 'DealerReviewsInactivePostIds', '', null, 'no');
 	}
     $s_postIdsOfInactiveReviews = get_option('DealerReviewsInactivePostIds');

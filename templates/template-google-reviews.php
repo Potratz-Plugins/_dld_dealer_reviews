@@ -1,7 +1,7 @@
 
 <?php
 /**
- * Template Name: New Testimonials
+ * Template Name: Dealer Reviews
  *
  */
 
@@ -35,7 +35,7 @@ h2 {margin:20px 0 !important;
 	font-size:2rem;
 }
 </style>
-
+<h1>HEY HEY</h1>
 <div class="page-content clearfix">
 	<div class="pad-5 primary-bg"></div>
 	<section class="headerBG light-gray-bg">

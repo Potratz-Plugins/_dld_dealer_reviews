@@ -198,7 +198,7 @@ function dld_setup_facebook_reviews_admin_page(){
             $s_googleReviews = htmlspecialchars($_POST["PostedGoogleReviews"]);
         }
         // echo "Google Reviews : ".$s_googleReviews;
-        dld_dealer_reviews_show_all_from_db_sortable($i_minimum_review_num, $s_googleReviews);
+        dld_dealer_reviews_show_all_from_db_sortable($s_googleReviews);
     ?>
 </div>
 

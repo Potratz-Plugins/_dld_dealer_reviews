@@ -205,10 +205,10 @@ function initMap() {
 function dld_dealer_reviews_show_all_on_page_template() {
    
     // GET MINIMUM REVIEW RATING
-    if(get_option('FacebookMinimumReviewOptionValue') === false){
-        update_option('FacebookMinimumReviewOptionValue', '3', false);
+    if(get_option('DealerReviewMinimumRatingOptionValue') === false){
+        update_option('DealerReviewMinimumRatingOptionValue', '3', false);
     }
-    $i_minimum_review_num = intval(get_option('FacebookMinimumReviewOptionValue'));
+    $i_minimum_review_num = intval(get_option('DealerReviewMinimumRatingOptionValue'));
     
     $a_allReviewsFromDB = dld_dealer_reviews_get_all_reviews_raw_data();
 
@@ -280,10 +280,10 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData = 
     }
 
     // GET MINIMUM REVIEW RATING
-    if(get_option('FacebookMinimumReviewOptionValue') === false){
-        update_option('FacebookMinimumReviewOptionValue', '3', false);
+    if(get_option('DealerReviewMinimumRatingOptionValue') === false){
+        update_option('DealerReviewMinimumRatingOptionValue', '3', false);
     }
-    $i_minimum_review_num = intval(get_option('FacebookMinimumReviewOptionValue'));
+    $i_minimum_review_num = intval(get_option('DealerReviewMinimumRatingOptionValue'));
     $a_allReviewsFromDB = dld_dealer_reviews_get_all_reviews_raw_data();
     $a_allDealerReviews = array();
     $a_activeReviews = array();

@@ -1,6 +1,6 @@
 <?php
 
-function dld_setup_facebook_reviews_admin_page(){
+function dld_setup_dealer_reviews_admin_page(){
 
     // ************** TEST BEGIN - NOT SURE WHAT OF THIS WILL NEED
     // Need to require the config file to have access to the wordpress functions
@@ -30,15 +30,15 @@ function dld_setup_facebook_reviews_admin_page(){
     if(get_option('FacebookLLAccessTokenOptionValue') === false){
         update_option('FacebookLLAccessTokenOptionValue', 'EAADkTZATrc48BABbW2z48zyZCOqd3GEWvvXftDxKGuBVOTpAImGCaxZBiu2QXOeqdP5eM1nZBATdF9OHKEJgHa2yTN0VFZCvZBZBQy43rGyEXEGYSZBzyULh6NPr4WKA6lXaZCEYJhYmUjku5WNctpCKWX1VcyCRJ5GIZD', false);
     }
-    if(get_option('FacebookMinimumReviewOptionValue') === false){
-        update_option('FacebookMinimumReviewOptionValue', '3', false);
+    if(get_option('DealerReviewMinimumRatingOptionValue') === false){
+        update_option('DealerReviewMinimumRatingOptionValue', '3', false);
     }
 
     $s_pageID =  get_option('FacebookPageIDOptionValue');
     $s_appID = get_option('FacebookAppIDOptionValue');
     $s_appSecret = get_option('FacebookAppSecretOptionValue');
     $s_llAccessToken = get_option('FacebookLLAccessTokenOptionValue');
-    $i_minimum_review_num = intval(get_option('FacebookMinimumReviewOptionValue'));
+    $i_minimum_review_num = intval(get_option('DealerReviewMinimumRatingOptionValue'));
     $i_mrn = $i_minimum_review_num;
     
 
@@ -73,7 +73,7 @@ not be deleted, but can be re-activated at any time and again added to the list 
 
     </table>
     
-    <form action="admin.php?page=dld_manage_facebook_reviews" method="post" enctype="multipart/form-data">
+    <form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
     <table style="width:600px;">
         <tr><td colspan="2" >
         <hr>
@@ -166,7 +166,7 @@ not be deleted, but can be re-activated at any time and again added to the list 
 <h2><strong>Get New Reviews:</strong></h2>
 
 <!-- ******************************************** GET GOOGLE REVIEWS ******************************************** -->
-<form action="admin.php?page=dld_manage_facebook_reviews" method="post" enctype="multipart/form-data">
+<form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
     <table>
         <tr><td colspan="2">
             <input type="text" name="refreshGoogleReviews" id="txtRefreshGoogleReviews" style="display:none;" value="yes">
@@ -181,7 +181,7 @@ not be deleted, but can be re-activated at any time and again added to the list 
 </form>
 
 <!-- ******************************************** GET FACEBOOK REVIEWS ******************************************** -->
-<form action="admin.php?page=dld_manage_facebook_reviews" method="post" enctype="multipart/form-data">
+<form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
     <table>
         <tr><td colspan="2">
             <input type="text" name="refreshReviews" id="txtRefreshReviews" style="display:none;" value="yes">
@@ -200,7 +200,7 @@ not be deleted, but can be re-activated at any time and again added to the list 
 
 
 
-<form action="admin.php?page=dld_manage_facebook_reviews" method="post" enctype="multipart/form-data">
+<form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
     <table>
         <tr><td colspan="2">
             <hr style="width:80%;" align="left">
@@ -252,8 +252,8 @@ if(strlen($s_newAppSecret) > 0 && get_option('FacebookAppSecretOptionValue') != 
     update_option('FacebookAppSecretOptionValue', $s_newAppSecret, false);
     $b_updatedValue = true;
 }
-if(strlen($s_newMinReview) > 0 && get_option('FacebookMinimumReviewOptionValue') != $s_newMinReview){
-    update_option('FacebookMinimumReviewOptionValue', $s_newMinReview, false);
+if(strlen($s_newMinReview) > 0 && get_option('DealerReviewMinimumRatingOptionValue') != $s_newMinReview){
+    update_option('DealerReviewMinimumRatingOptionValue', $s_newMinReview, false);
     $b_updatedValue = true;
 }
 if($b_updatedValue){

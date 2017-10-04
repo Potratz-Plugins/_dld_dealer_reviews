@@ -5,6 +5,11 @@
  * Version: 1.0
  * Author: Tom Molinaro
  *
+ * DB USAGE :
+ * Creates and utilizes several option values for facebook login credentials and minimum review rating
+ * Creates DealerReview objects which are stored in dld_post table
+ *
+ *
  */
 
 

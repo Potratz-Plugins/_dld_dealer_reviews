@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: DLD Dealer Reviews
- * Description: Retrieves, manages and displays facebook and google reviews on page
+ * Description: Retrieves, manages and displays facebook and google reviews on 'dealer reviews' page, which is generated on activation
  * Version: 1.0
  * Author: Tom Molinaro
  *
@@ -18,7 +18,7 @@ function dld_dealer_reviews_admin_menu() {
 
         add_menu_page (
             'Dealer Reviews Plugin Page',					// string $page_title
-            'Dealer Reviews Plugin',					// string $menu_title
+            'Dealer Reviews',					// string $menu_title
             'read',							// string $capability
             'dld_manage_dealer_reviews',		// string $menu_slug
             'dld_dealer_reviews_init',		// callback $function

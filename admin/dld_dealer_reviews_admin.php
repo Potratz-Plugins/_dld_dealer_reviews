@@ -65,7 +65,9 @@ not be deleted, but can be re-activated at any time and again added to the list 
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>3. </strong> Click <strong>'Get New Google Reviews'</strong>, then <strong>'Save Google Reviews'</strong> </br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>4. </strong> Click <strong>'Get New Facebook Reviews'</strong></br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>5. </strong> Rearrange the order of reviews as they should be displayed, and click <strong>'Do Not Show'</strong> for the reviews that should be hidden</br>
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>6. </strong> Click <strong>'Save New Review Order'</strong>.  Reviews should now be showing up on site in specified order. 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>6. </strong> Click <strong>'Save New Review Order'</strong>.  Reviews should now be showing up on site in specified order. </br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>7. </strong> In admin sidebar - click <strong>'Appearance'</strong>, then select <strong>'Menus'</strong>, finally select <strong>'Dealer Reviews'</strong> from list of pages and 
+<strong>'Add to Menu'</strong> to add page to menu structure 
 </p>
 <!-- <a id="aHideShow" style="font-weight:bold;font-size:1.3em;text-decoration:underline;" class="btn btn-primary"></a> -->
 <button type="button" id="aHideShow" class="myRedButton" style="width:150px;height:35px;"  >Help</button>

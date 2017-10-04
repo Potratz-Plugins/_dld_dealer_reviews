@@ -101,7 +101,7 @@ public function show_dealer_review_sortable($b_is_active = false) {
 public function show_dealer_review_on_page(){
     $i_postID = $this->id;
     $s_image_url = $this->imageUrl;
-    $s_reviewer_image_display = '<img src="'.$s_image_url.'" class="photoDisplay"/>'; 
+    $s_reviewer_image_display = '<img src="'.$s_image_url.'" class="photoDisplay" style="margin:auto;display:block;"/>'; 
     $s_reviewer_name = $this->reviewerName;
     $i_numeric_rating = $this->numericRating;
     $s_review_text = $this->reviewText;
@@ -110,9 +110,9 @@ public function show_dealer_review_on_page(){
     $s_full_path_to_icon = $s_path_to_icons.$s_review_type;
     $s_review_type_icon = '<img src="'.$s_full_path_to_icon.'.png" style="height:35px;width:35px;"/>'; 
    
-    echo "<div class='rev'>";
-    echo    "<div class='row'>";
-    echo        "<div class='col-lg-2'>";
+    echo "<div class='rev' >";
+    echo    "<div class='row' >";
+    echo        "<div class='col-lg-2' >";
     echo            $s_reviewer_image_display.'</br>';
     echo        "</div>";
     echo        "<div class='col-lg-10'>";

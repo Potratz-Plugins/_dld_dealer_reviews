@@ -43,16 +43,21 @@ function dld_setup_facebook_reviews_admin_page(){
     
 
     ?>
+<hr>
+<div class="hero-unit">
+<h1>Dealer Reviews Plugin Info</h1>
+<p class="expandableP">
+<strong><big> &nbsp;&#8226;&nbsp; Facebook Connect Data - </big></strong> This will likely not need to be changed.  These are fields used to access Facebook's Api, through which reviews are pulled.</br>
+&nbsp;&#8226;&nbsp;<strong>Update Minimum Review Rating: </strong> This will likely not need to be changed.  These are fields used to access Facebook's Api, through which reviews are pulled.</br>
+&nbsp;&#8226;&nbsp;<strong>Facebook Connect Data: </strong> This will likely not need to be changed.  These are fields used to access Facebook's Api, through which reviews are pulled.</br>
+&nbsp;&#8226;&nbsp;<strong>Facebook Connect Data: </strong> This will likely not need to be changed.  These are fields used to access Facebook's Api, through which reviews are pulled.</br>
+&nbsp;&#8226;&nbsp;<strong>Facebook Connect Data: </strong> This will likely not need to be changed.  These are fields used to access Facebook's Api, through which reviews are pulled.</br>
+</p>
+<a>more</a>
+</div>
+
     <hr>
     <table>
-        <tr><td>
-            <fb:login-button
-                scope='public_profile,email,user_birthday,user_location,manage_pages,user_posts,pages_show_list,ads_management'
-                onlogin="getLoginStatus();" id="loginButton" style="display:block">
-            </fb:login-button>
-        </td><td>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id='logout' onclick='logout();'>logout</a>
-        </td></tr>
     </table>
     
     <form action="admin.php?page=dld_manage_facebook_reviews" method="post" enctype="multipart/form-data">
@@ -60,6 +65,14 @@ function dld_setup_facebook_reviews_admin_page(){
         <tr><td colspan="2" >
         <hr>
             <h2><strong>Facebook Connect Data:</strong></h2>
+        </td></tr>
+        <tr><td>
+            <fb:login-button
+                scope='public_profile,email,user_birthday,user_location,manage_pages,user_posts,pages_show_list,ads_management'
+                onlogin="getLoginStatus();" id="loginButton" style="display:block">
+            </fb:login-button>
+        </td><td>
+           <a href="#" id='logout' onclick='logout();'>logout</a>
         </td></tr>
 
         <tr><td>
@@ -83,7 +96,7 @@ function dld_setup_facebook_reviews_admin_page(){
         </td></tr>
         <tr><td colspan="2" >
         <hr>
-            <h2><strong>Set Minimum Review To Display:</strong></h2>
+            <h2><strong>Set Minimum Review Rating To Display:</strong></h2>
         </td></tr>
         <tr><td>
             MINIMUM REVIEW 0-5 : 
@@ -125,7 +138,7 @@ function dld_setup_facebook_reviews_admin_page(){
          </td></tr>
          <tr><td colspan="2" >
          </br>
-            <input type="submit" value="Update Minimum Review" name="submit"  id="btnUpdateMinimumReview" class="myButton" style="width:600px;height:35px;"  >
+            <input type="submit" value="Update Minimum Review Rating" name="submit"  id="btnUpdateMinimumReview" class="myButton" style="width:600px;height:35px;"  >
         </tr></td>
     </table>
                

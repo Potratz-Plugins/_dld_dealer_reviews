@@ -12,6 +12,12 @@
 	box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);
   }
 
+  .expandableP {
+    line-height: 18px;
+    height: 54px;
+    overflow: hidden;
+}
+
 
 .myButton {
 	-moz-box-shadow:inset 0px 0px 15px 3px #23395e;

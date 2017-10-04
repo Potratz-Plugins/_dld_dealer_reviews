@@ -12,16 +12,12 @@ global $wpdb;
 require_once( ABSPATH . '/wp-content/plugins/_dld_dealer_reviews/include/functions.php' );
 require_once( ABSPATH . '/wp-content/plugins/_dld_dealer_reviews/include/DealerReviews.class.php' );
 
-
-
 get_header();
 
 ?>
 <style>
-
 .fb_reviews {
   font-family: "Helvetica Neue", Helvetica tahoma verdana arial sans-serif;
-  
   }
   .photoDisplay {
 	  width: 115px;
@@ -57,7 +53,6 @@ h2 {margin:20px 0 !important;
 </style>
 
 
-
 <div class="page-content clearfix">
 <div class="pad-5 primary-bg"></div>
 <section class="headerBG light-gray-bg">
@@ -79,12 +74,7 @@ h2 {margin:20px 0 !important;
 
 <section style="padding:15px 0;background-color:#fff;">
   <div id="reviews">
-
-
 <?php
-
-
-
 
 dld_dealer_reviews_show_all_on_page_template();
 
@@ -94,9 +84,7 @@ dld_dealer_reviews_show_all_on_page_template();
 </div>
 
 
-
 <script>
-
 function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 32.3669454, lng: -86.2096623},
@@ -142,14 +130,6 @@ function initMap() {
 				}
 				rating.innerHTML = rate_avg + " " + veh_stars + " Rating <span style='color:#000'> at " + place + "</span>";
 
-				// var google_review = '';
-				// for (i = 0; i < 5; i++) {
-				// 	if(rev[i]['rating'] >= 3) {
-				// 	google_review += "<section class='rev'><div class='MaxWidth rev-content'><i class='fa fa-quote-left' style='font-size:2rem;padding:10px 10px 0 10px;color:#888'></i>" + rev[i]['text'] + "<i class='fa fa-quote-right' style='font-size:2rem;padding:0 10px;color:#888'></i><p style='margin-top:15px;'> - " + rev[i]['author_name'] + "</p></div></section>";
-				// 	}
-				// }
-
-				// reviews.innerHTML = google_review;
         });
       }
     </script>
@@ -158,9 +138,6 @@ function initMap() {
  <div id="map"></div>
 <?php
 
-
-
  get_footer(); 
- 
 
  ?>

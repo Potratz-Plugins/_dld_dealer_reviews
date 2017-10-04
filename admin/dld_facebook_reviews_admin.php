@@ -4,7 +4,6 @@ function dld_setup_facebook_reviews_admin_page(){
 
     // ************** TEST BEGIN - NOT SURE WHAT OF THIS WILL NEED
     // Need to require the config file to have access to the wordpress functions
-    // require_once( "../../../../../../wp-load.php" );
     require_once( ABSPATH."wp-admin/includes/file.php" );
     require_once( ABSPATH."wp-admin/includes/media.php" );
     require_once( ABSPATH."wp-admin/includes/image.php" );
@@ -40,7 +39,6 @@ function dld_setup_facebook_reviews_admin_page(){
     $s_appSecret = get_option('FacebookAppSecretOptionValue');
     $s_llAccessToken = get_option('FacebookLLAccessTokenOptionValue');
     $i_minimum_review_num = intval(get_option('FacebookMinimumReviewOptionValue'));
-    // echo '<h1>min rev # : '.$i_minimum_review_num.'</h1>';
     $i_mrn = $i_minimum_review_num;
     
 
@@ -68,7 +66,6 @@ function dld_setup_facebook_reviews_admin_page(){
             PAGE ID : 
         </td><td>
             <strong><input type="text" name="txtPageID" id="txtPageID" style="width:400px;" value="<?php echo $s_pageID; ?>"></strong>
-            <!-- <input type="text" name="changeFBConnectData" id="txtchangeFBConnectData" style="width:400px;display:hidden;" value="yes"> -->
         </td></tr>
         <tr><td>
             APP ID : 
@@ -197,7 +194,6 @@ function dld_setup_facebook_reviews_admin_page(){
         if(strlen(htmlspecialchars($_POST["PostedGoogleReviews"])) > 0){
             $s_googleReviews = htmlspecialchars($_POST["PostedGoogleReviews"]);
         }
-        // echo "Google Reviews : ".$s_googleReviews;
         dld_dealer_reviews_show_all_from_db_sortable($s_googleReviews);
     ?>
 </div>
@@ -239,6 +235,8 @@ if($b_updatedValue){
         location.reload();</script>";
 }
 
+
+// ************************************************ PREVENT INFINITE POSTBACK LOOP ************************************************
 $s_RefreshReviews = htmlspecialchars($_POST["refreshReviews"]);
 if ($s_RefreshReviews == 'yes'){
 
@@ -308,51 +306,6 @@ if ($s_saveReviewOrder == 'yes'){
         document.getElementById('txtSaveReviewOrder').value = 'yes';
     </script>";
 }
-
-
-// TEST - MIGHT NOT NEED
-// $s_saveReviewOrder = htmlspecialchars($_POST["changeFBConnectData"]);
-// if ($s_saveReviewOrder == 'yes'){
-
-//     dld_save_new_review_order($s_postIdsActiveReviews, $s_postIdsInactiveReviews);
-//         echo "
-//         <script>
-//             document.getElementById('txtSaveReviewOrder').value = 'no';
-//          document.getElementById('btnUpdateFBConnectData').click();
-//             var x = false;
-//         </script>";
-        
-    
-    
-// } else {
-//     echo "
-//     <script>
-//         document.getElementById('txtSaveReviewOrder').value = 'yes';
-//     </script>";
-// }
-
-
-// $s_showAllReviews= htmlspecialchars($_POST["showAllReviews"]);
-// if ($s_showAllReviews == 'yes'){
-
-//     dld_save_new_review_order($s_postIdsActiveReviews);
-//         echo "
-//         <script>
-//             document.getElementById('txtShowAllReviews').value = 'no';
-//       //   document.getElementById('btnShowAllReviews').click();
-//             var x = false;
-//         </script>";
-        
-    
-    
-// } else {
-//     echo "
-//     <script>
-//         document.getElementById('txtShowAllReviews').value = 'yes';
-//     </script>";
-// }
-
-
 
 }
 

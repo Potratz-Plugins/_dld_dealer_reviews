@@ -7,32 +7,27 @@
  */
 class DealerReviews {
     
-    public $reviewerName = '';
-    public $imageUrl = '';
-    public $numericRating = 0;
-    public $reviewText = '';
-    public $reviewType = '';
-    public $authorId = '';
-    public $id = 0;
+public $reviewerName = '';
+public $imageUrl = '';
+public $numericRating = 0;
+public $reviewText = '';
+public $reviewType = '';
+public $authorId = '';
+public $id = 0;
 
-    public function __construct($s_reviewer_name = '', $s_image_url = '', $i_numeric_rating = 5,  $s_review_text = '', $s_review_type = 'facebook', $s_author_id = '', $i_postID = null){
+public function __construct($s_reviewer_name = '', $s_image_url = '', $i_numeric_rating = 5,  $s_review_text = '', $s_review_type = 'facebook', $s_author_id = '', $i_postID = null){
 
-        $this->reviewerName = $s_reviewer_name;
-        $this->imageUrl = $s_image_url;
-        $this->numericRating = $i_numeric_rating;
-        $this->reviewText = $s_review_text;
-        $this->reviewType = $s_review_type;
-        $this->authorId = $s_author_id;
-        $this->id = $i_postID;
-        }
-
-    public function __destruct(){}
-
-    
-
-    protected function FBReviewSaveToDB(){
-
+    $this->reviewerName = $s_reviewer_name;
+    $this->imageUrl = $s_image_url;
+    $this->numericRating = $i_numeric_rating;
+    $this->reviewText = $s_review_text;
+    $this->reviewType = $s_review_type;
+    $this->authorId = $s_author_id;
+    $this->id = $i_postID;
     }
+
+public function __destruct(){}
+
 
 
  // **************************************** ALL FUNCTIONS ****************************************
@@ -84,7 +79,6 @@ public function show_dealer_review_sortable($b_is_active = false) {
                         '.$s_reviewer_image_display.'
                     </td><td>';
                         echo '
-                        
                         <strong>'.$s_reviewer_name.'</strong></br>';
                         $this->reviews_get_stars($i_numeric_rating);
                         echo '</br>
@@ -100,7 +94,6 @@ public function show_dealer_review_sortable($b_is_active = false) {
                     </div>
                         ';
                 echo '</li>';
-                        
     }
 
 
@@ -117,27 +110,10 @@ public function show_dealer_review_on_page(){
     $s_full_path_to_icon = $s_path_to_icons.$s_review_type;
     $s_review_type_icon = '<img src="'.$s_full_path_to_icon.'.png" style="height:35px;width:35px;"/>'; 
    
-
-    // THIS WAY IS SCOTTS
-    // echo "<div class='rev'>";
-    // echo "<div class='rev-content'>";
-    // echo "<i class='fa fa-quote-left' style='font-size:2rem;padding:10px 10px 0 10px;color:#888'></i>";
-    // echo $s_review_text;
-    // echo "<i class='fa fa-quote-right' style='font-size:2rem;padding:0 10px;color:#888'></i>";
-    // echo "<p style='margin-top:15px;'> - "; 
-    // echo $s_reviewer_name;
-    // echo "</p>";
-    // echo "</div>";
-    // echo "</div>";
-
-
-    // THIS WAY IS SCOTTS
     echo "<div class='rev'>";
     echo    "<div class='row'>";
     echo        "<div class='col-lg-2'>";
-
     echo            $s_reviewer_image_display.'</br>';
-   
     echo        "</div>";
     echo        "<div class='col-lg-10'>";
               
@@ -155,56 +131,6 @@ public function show_dealer_review_on_page(){
     echo        "</div>";
     echo    "</div>";
     echo "</div>";
-
-
-    // USING TABLE - NOT STYLED
-    // echo '
-    // <section class="rev">
-    //     <div class="containter">
-    //         <div class="row"
-    //             <div class="col-lg-3 fb_reviews">';
-    //                 echo $s_reviewer_image_display.'
-    //             </div>
-    //             <div class="col-lg-9">';
-    //                 echo '<strong>'.$s_reviewer_name.'</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</br>';
-    //                 $this->reviews_get_stars($i_numeric_rating);
-    //                 echo '
-    //                 <span style="font-size:1.4em">'.$s_review_text.'</span>
-    //             </div>
-    //         </div>
-    //     </div>
-    // </section>';
-
-
-    // USING TABLE - NOT STYLED
-    // echo '
-    //                 <div class="fb_reviews" style="width:600px;padding:15px;">
-    //                     <table style="width:100%">
-    //                         <tr><td style="padding:10px;width:25%;">
-    //                         <tr><td style="width:25%">';
-    //                             echo $s_reviewer_image_display.'
-    //                         </td>
-    //                         <td style="text-align:left">';
-    //                             echo '<strong>'.$s_reviewer_name.'</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</br>';
-    //                             $this->reviews_get_stars($i_numeric_rating);
-    //                             echo '
-    //                         </td></tr>
-    //                         <tr><td colspan="2" style="padding:10px">
-    //                             <span style="font-size:16px">'.$s_review_text.'</span>
-    //                         </td></tr>
-    //                         <tr><td style="padding:10px;font-size:16px">
-    //                             POST ID : 
-    //                         </td><td>
-    //                             <span style="font-size:16px">'.$i_postID.'</span>
-    //                         </td></tr>
-    //                     </table>
-    //                 </div>';
-   
-   
-
-
-   
-    
 }
 
 
@@ -220,9 +146,11 @@ protected function reviews_get_stars($rating) {
             ?><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="28" height="28" viewBox="0 0 1792 1792"><path d="M1201 1004l306-297-422-62-189-382-189 382-422 62 306 297-73 421 378-199 377 199zm527-357q0 22-26 48l-363 354 86 500q1 7 1 20 0 50-41 50-19 0-40-12l-449-236-449 236q-22 12-40 12-21 0-31.5-14.5t-10.5-35.5q0-6 2-20l86-500-364-354q-25-27-25-48 0-37 56-46l502-73 225-455q19-41 49-41t49 41l225 455 502 73q56 9 56 46z" fill="#ccc"></path></svg><?php
         }
     }
-   }
+}
 
-   public function dld_dealer_reviews_save_to_db(){ 
+
+
+public function dld_dealer_reviews_save_to_db(){ 
 
     // ONLY INSERT RECORD IF IT DOES NOT ALREADY EXIST
     $a_allReviewsFromDB = array();
@@ -232,13 +160,8 @@ protected function reviews_get_stars($rating) {
                 $a_author_ids[] = $o_ReviewData->post_mime_type;
     }
     if(!in_array($this->authorId, $a_author_ids)){
-        // echo '<h1>TRYING TO SAVE</h1>';
-        //pre_var_dump($this, 'THIS REVIEW');
-        // $i_postID = $this->id;
-      //  $b_is_active = $this->active;
       $s_image_url = $this->imageUrl;
       $s_author_id = $this->authorId;
-      // $s_reviewer_image = '<img src="'.$s_image_url.'" class="photoDisplay"/>'; 
       $s_reviewer_name = $this->reviewerName;
       $i_numeric_rating = $this->numericRating;
       $s_review_text = $this->reviewText;
@@ -257,7 +180,6 @@ protected function reviews_get_stars($rating) {
       $s_NewlyInsertedPostID = wp_insert_post( $a_CreateRating );
   
       if ( $s_NewlyInsertedPostID != false && $s_NewlyInsertedPostID > 0 ) {
-          // echo '<h1>saving to db</h1>';
           return $s_NewlyInsertedPostID;
       } else {
           echo '</br>*** error saving to db</br>';
@@ -266,10 +188,5 @@ protected function reviews_get_stars($rating) {
     }  else {
         return false;
     }
-
-    
-    }
-
-  
-
+}
 }

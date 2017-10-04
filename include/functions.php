@@ -17,26 +17,25 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
 
     session_start();
  $token = '';
-             //TEST - show token from url -  echo '</br>token from url : ' . htmlspecialchars($_GET["token"]).'</br>';
+                //TEST - show token from url -  echo '</br>token from url : ' . htmlspecialchars($_GET["token"]).'</br>';
  $token = htmlspecialchars($_GET["token"]);
- // echo '</br>the token : '.$token.'</br>token was last line</br>';
+                // TEST - echo '</br>the token : '.$token.'</br>token was last line</br>';
  $_SESSION['facebook_access_token'] = $token;
-             // TEST - show access token -  echo 'fb access token : '.$token.'</br>'; var_dump($_SESSION['facebook_access_token']);
+                // TEST - show access token -  echo 'fb access token : '.$token.'</br>'; var_dump($_SESSION['facebook_access_token']);
  // CREATE Facebook object
  $fb = new Facebook\Facebook([
  'app_id' => $s_appID , // Replace {app-id} with your app id
  'app_secret' => $s_appSecret,
  'default_graph_version' => 'v2.2',
   ]);
-             // TEST - show facebook object -   echo '<pre>'; var_dump($fb); echo '</pre>';
+                // TEST - show facebook object -   echo '<pre>'; var_dump($fb); echo '</pre>';
  $helper = $fb->getRedirectLoginHelper();
  
 
 // IF Long Lived Access Token exists as option value, GET Long Lived Access Token from option value
  if ( get_option( 'LongLivedAccessToken') != false ) {
      $longLivedAccessToken = get_option( 'LongLivedAccessToken' );
-             // TEST - show long lived access token -   
-            // echo '</br>got long lived acc tok : '.$longLivedAccessToken.'</br>';
+                // TEST - echo '</br>got long lived acc tok : '.$longLivedAccessToken.'</br>';
  }
 // ELSE - get long lived access token using short lived access token
  else {
@@ -46,7 +45,7 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
          $oAuth2Client = $fb->getOAuth2Client();
          // exchange a short-lived token for a long-lived one
           $longLivedAccessToken = $oAuth2Client->getLongLivedAccessToken($_SESSION['facebook_access_token']);
-             // TEST - show long lived access token -   echo '</br>long lived access token :'.$longLivedAccessToken.'</br>';
+                // TEST - show long lived access token -   echo '</br>long lived access token :'.$longLivedAccessToken.'</br>';
          update_option( 'LongLivedAccessToken', $longLivedAccessToken, null, 'no' );
      }
      else{
@@ -59,17 +58,17 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
  // Use long lived access token as session and default token
  $_SESSION['facebook_access_token'] = $longLivedAccessToken;
  $fb->setDefaultAccessToken($_SESSION['facebook_access_token']);
- // TEST - show long lived access token -   echo '</br>long lived access token : '.$longLivedAccessToken.'</br>';
+                // TEST - show long lived access token -   echo '</br>long lived access token : '.$longLivedAccessToken.'</br>';
  
  try {
      // GET page access token 
      $response = $fb->get('/'.$s_pageID.'?fields=access_token ');
      $json = json_decode($response->getBody());
      $page_token = $json->access_token;
-             // TEST - show page token -   echo '<pre>';  echo '</br>page token : </br>';  var_dump($page_token); echo '</pre>';
+                // TEST - show page token -   echo '<pre>';  echo '</br>page token : </br>';  var_dump($page_token); echo '</pre>';
      $response = $fb->get('/'.$s_pageID.'/ratings', $page_token);
      $json = json_decode($response->getBody());
-             // TEST - show response -   echo '<pre>'; echo '</br>ratings response: </br>'; var_dump($response); echo '</br>json: </br>'; var_dump($json);
+                // TEST - show response -   echo '<pre>'; echo '</br>ratings response: </br>'; var_dump($response); echo '</br>json: </br>'; var_dump($json);
  } catch(Facebook\Exceptions\FacebookResponseException $e){
      // SHOW ERROR if graph returns an error
      echo 'graph returned an error : '.$e->getMessage();
@@ -80,19 +79,15 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
      echo 'facebook sdk returned an error : '.$e->getMessage();
      exit;
  }
- $a_allFBReviews = array();
  // LOOP through all returned reviews, pull photos and display data
  $i_count = 0;
  foreach($json->data as $record){
-    // pre_var_dump($record, 'a reacord');
-     // only show review if above or equal to minimum review number (set as option)
+
+    // only show review if above or equal to minimum review number (set as option)
      if(intval($record->rating) >= intval($i_minimum_review_num)){ 
         pre_var_dump(intval($record->rating), 'intval record rating : ');
         pre_var_dump($i_minimum_review_num, 'i_minimum_review_num');
 
-        // $o_Review->order = 9;
-        // echo $o_Review->order;
-        
          // GET reviewer's picture using their fb id
          $response = $fb->get('/'.$record->reviewer->id.'/picture?type=large', $page_token); 
          $graphNode = $response->getHeaders();
@@ -107,31 +102,15 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
          } else {
              $s_fb_review_text = '';
          } 
-         // DISPLAY all reviews
-         ?>  
-         <?php // fb_show_reviews($s_fb_image, $s_fb_name, $i_fb_rating, $s_fb_review_text); ?>
-         <?php 
 
-
-
+        // CREATE REVIEW OBJECT
         $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, 'facebook', $s_author_id);
         $i_count++;
        
+        // SAVE REVIEW TO DB
         $o_Review->dld_dealer_reviews_save_to_db();
-
-         // SAVE REVIEW TO DB
-
-         // pre_var_dump($o_Review, 'review : ');
-         // REMOVE - this array is unused
-         $a_allFBReviews[] = $o_Review;
-        //  echo '<div class="fb_reviews" style="width:600px;padding:15px;">';
-        //  $o_Review->show_dealer_review();
-        //  echo '</div>';
          }
     }
-    // pre_var_dump($a_allFBReviews, 'all fb reviews : ');
-    // foreach
-    // show_dealer_reviews($a_allFBReviews);
  }
 
 
@@ -223,33 +202,6 @@ function initMap() {
 
 
 
-//  function dld_dealer_reviews_show_all_on_page_template($a_reorderReviewsArray = null) {
-//     $a_allReviewsFromDB = dld_dealer_reviews_get_all_reviews_raw_data();
-//     //  pre_var_dump($a_allReviewsFromDB);
-//     $a_allReviewsAsDealerReviews = array();
-
-//     foreach($a_allReviewsFromDB->posts as $o_ReviewData){
-//         // pre_var_dump($o_ReviewData, 'SOME REVIEW DATA');
-//         // SET object variables
-//         $s_author_id = $o_ReviewData->post_mime_type;
-//         $s_review_type = $o_ReviewData->post_status;
-//         $s_fb_name = $o_ReviewData->post_excerpt;
-//         $s_image_url = $o_ReviewData->post_title;
-//         $i_fb_rating = $o_ReviewData->comment_status;  
-//         $s_fb_review_text = $o_ReviewData->post_content;
-//         $i_postID = $o_ReviewData->ID;
-
-//         // CREATE DealerReviews object
-//         $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, $s_review_type, $s_author_id, $i_postID );
-//         echo '<div class="fb_reviews" style="width:600px;padding:15px;">';
-//        $o_Review->show_dealer_review();
-//         echo '</div>';
-
-//         // Add this DealerReview object to array
-//         $a_allReviewsAsDealerReviews[] = $o_Review;
-//     }
-// }
-
 function dld_dealer_reviews_show_all_on_page_template() {
    
     // GET MINIMUM REVIEW RATING
@@ -320,15 +272,6 @@ function dld_dealer_reviews_show_all_on_page_template() {
 
 
 
-
-
-
-
-
-
-
-
-
 function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData = '') {
     // GET GOOGLE REVIEWS DATA IF PASSED IN
     if(strlen($s_googleReviewsRawData) > 0){
@@ -341,10 +284,7 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData = 
         update_option('FacebookMinimumReviewOptionValue', '3', false);
     }
     $i_minimum_review_num = intval(get_option('FacebookMinimumReviewOptionValue'));
-    
     $a_allReviewsFromDB = dld_dealer_reviews_get_all_reviews_raw_data();
-
-    // pre_var_dump($a_allReviewsFromDB, 'all reviews from db');
     $a_allDealerReviews = array();
     $a_activeReviews = array();
     $a_activeReviewsSorted = array();
@@ -358,24 +298,17 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData = 
 	}
     $s_postIdsOfActiveReviews = get_option('DealerReviewsActivePostIds');
     $a_postIdsActive = explode(",", $s_postIdsOfActiveReviews);
-    // echo $DealerReviewsActivePostIds;
 
     // get array of inactive review post ids, signifying they are not a new review and therefore will not be displayed as active
 	if ( get_option( 'DealerReviewsInactivePostIds') === false ) {
 		add_option( 'DealerReviewsInactivePostIds', '', null, 'no');
 	}
     $s_postIdsOfInactiveReviews = get_option('DealerReviewsInactivePostIds');
-    // echo $s_postIdsOfInactiveReviews;
-
-
-   
 
     // DISPLAY ALL DATABASE STORED REVIEWS
     foreach($a_allReviewsFromDB->posts as $o_ReviewData){
 
-       // pre_var_dump($o_ReviewData, 'review data');
         // SET object variables
-        // TODO: NOT IN post_type
         $s_author_id = $o_ReviewData->post_mime_type;
         $s_review_type = $o_ReviewData->post_status;
         $s_fb_name = $o_ReviewData->post_excerpt;
@@ -388,9 +321,7 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData = 
         // CREATE DealerReviews object
         $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, $s_review_type, $s_author_id, $i_postID);
 
-        // TODO: add active reviews to array in in order of DealerReviewsActivePostIds
         // IF the post id is found in array of active review post id's
-        
         if(strpos($s_postIdsOfActiveReviews, $s_postIDString) !== false && intval($i_fb_rating) >= $i_minimum_review_num){
             $a_activeReviews[] = $o_Review;
         } 
@@ -451,10 +382,9 @@ function dld_dealer_reviews_show_all_from_db_sortable($s_googleReviewsRawData = 
 }
 
 
+
 function dld_process_google_reviews_from_string($s_rawData){
 
-    // TODO: set author id
-    
     // Break string of all reviews into strings for each review
     $a_almostObjects = explode(",.,.,", $s_rawData);
     // pre_var_dump($a_lessRawData, 'less raw data');
@@ -491,11 +421,7 @@ function dld_process_google_reviews_from_string($s_rawData){
             }
 
               //Create unique author id / post_author by concatenating time string and text length
-            //   pre_var_dump($s_time_string, 'time string');
-            //   pre_var_dump($s_length_of_text, 'text len');
               $s_author_id = $s_time_string.$s_length_of_text;
-            //   pre_var_dump($s_author_id, 'concat auth id string');
-  
 
             // CREATE DealerReviews object
             $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, 'google', $s_author_id );
@@ -504,60 +430,6 @@ function dld_process_google_reviews_from_string($s_rawData){
     }
 }
 
-
-
-
-// function dld_process_google_reviews_from_string2($s_rawData){
-    
-//         // TODO: set author id
-        
-//         // Break string of all reviews into strings for each review
-//         $a_almostObjects = explode(",.,.,", $s_rawData);
-//         // pre_var_dump($a_lessRawData, 'less raw data');
-//         foreach($a_almostObjects as $s_review){
-//             $s_time_string = '';
-//             $s_length_of_text = '';
-//             // check if review string has data
-//             if(strlen($s_review) > 0){
-//                 // break this review string into fields 
-//                 $a_reviewFields = explode(",,,", $s_review);
-//                 // pre_var_dump($a_reviewFields, 'a review');
-//                 foreach($a_reviewFields as $s_reviewField){
-//                     $a_reviewFieldPair = explode(":", $s_reviewField, 2);
-//                     //pre_var_dump($a_reviewFieldPair, 'Rev Field Pair :');
-//                     if($a_reviewFieldPair[0] == 'GOOGLEREVIEWNAME'){
-//                         $s_fb_name = $a_reviewFieldPair[1];
-//                     }
-//                     if($a_reviewFieldPair[0] == 'GOOGLEREVIEWIMAGE'){
-//                         $s_image_url = $a_reviewFieldPair[1];
-//                     }
-//                     if($a_reviewFieldPair[0] == 'GOOGLEREVIEWRATING'){
-//                         $i_fb_rating = intval($a_reviewFieldPair[1]);
-//                     }
-//                     if($a_reviewFieldPair[0] == 'GOOGLEREVIEWTEXT'){
-//                         $s_fb_review_text = $a_reviewFieldPair[1];
-//                         $s_length_of_text = strval(strlen($s_fb_review_text));
-//                     }
-//                     if($a_reviewFieldPair[0] == 'GOOGLEREVIEWTIME'){
-//                         if(strlen($a_reviewFieldPair[1]) > 0){
-//                             $s_time_string = $a_reviewFieldPair[1];
-//                         } 
-//                     }
-//                 } 
-//             }
-//                 //Create unique author id / post_author by concatenating time string and text length
-//                 pre_var_dump($s_time_string, 'time string');
-//                 pre_var_dump($s_length_of_text, 'text len');
-//                 $s_author_id = $s_time_string.$s_length_of_text;
-//                 pre_var_dump($s_author_id, 'concat auth id string');
-//                 $s_author_id = (int)$s_author_id;
-//                 pre_var_dump($s_author_id, 'auth id int');
-    
-//                 // CREATE DealerReviews object
-//                 $o_Review = new DealerReviews($s_fb_name, $s_image_url, $i_fb_rating,  $s_fb_review_text, 'google', $s_author_id );
-//                 $o_Review->dld_dealer_reviews_save_to_db();
-//         }
-//     }
 
 
 function fb_get_stars($rating) {
@@ -608,15 +480,5 @@ function dld_save_new_review_order($s_postIdsActiveReviews, $s_postIdsInactiveRe
     update_option( 'DealerReviewsActivePostIds', $s_postIdsActiveReviews, null );
     update_option( 'DealerReviewsInactivePostIds', $s_postIdsInactiveReviews, null );
 }
-
-
-
-
-
-
-// ***************** FUNCTION - FOR TESTING - PASS ARRAY / OBJECT FOR 1st param, optional heading string for 2nd param
- function pre_var_dump($a_var, $s_heading = ''){if($s_heading != ''){ echo "<h2>$s_heading</h2>";} echo '<pre>';var_dump($a_var);echo '</pre>';}
-// ***************** END FOR TESTING 
-
 
 ?>

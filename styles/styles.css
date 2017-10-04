@@ -13,8 +13,9 @@
   }
 
   .expandableP {
+	  width:80%;
     line-height: 18px;
-    height: 54px;
+    height: 0px;
     overflow: hidden;
 }
 

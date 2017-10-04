@@ -82,15 +82,17 @@ $(document).ready(function () {
 
     
 
-    $('a').click(function() {
-        var p = $('a').prev('p')
+    $('#aHideShow').click(function() {
+        var moreArrow = String.fromCharCode(62);
+        var lessArrow = String.fromCharCode(60);
+        var p = $('#aHideShow').prev('p')
         var lineheight = parseInt(p.css('line-height'))
-        if (parseInt(p.css('height')) == lineheight*3) {
+        if (parseInt(p.css('height')) == lineheight*0) {
            p.css('height','auto');
-           $(this).text('Less')
+           $(this).text('Hide Help')
         } else {
-           p.css('height',lineheight*3+'px');
-           $(this).text('More')
+           p.css('height',lineheight*0+'px');
+           $(this).text('Show Help')
         }
     });
     

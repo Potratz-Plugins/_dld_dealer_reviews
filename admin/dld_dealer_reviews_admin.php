@@ -45,19 +45,32 @@ function dld_setup_facebook_reviews_admin_page(){
     ?>
 <hr>
 <div class="hero-unit">
-<h1>Dealer Reviews Plugin Info</h1>
+<h1>DLD Dealer Reviews</h1>
+<!-- <a id="aHideShow" style="font-weight:bold;font-size:1.5em;" class="btn btn-primary">SHOW HELP INFO</a> -->
+
 <p class="expandableP">
 <strong><big> &nbsp;&#8226;&nbsp; Facebook Connect Data - </big></strong> This will likely not need to be changed.  These are fields used to access Facebook's Api, through which reviews are pulled.</br>
-&nbsp;&#8226;&nbsp;<strong>Update Minimum Review Rating: </strong> This will likely not need to be changed.  These are fields used to access Facebook's Api, through which reviews are pulled.</br>
-&nbsp;&#8226;&nbsp;<strong>Facebook Connect Data: </strong> This will likely not need to be changed.  These are fields used to access Facebook's Api, through which reviews are pulled.</br>
-&nbsp;&#8226;&nbsp;<strong>Facebook Connect Data: </strong> This will likely not need to be changed.  These are fields used to access Facebook's Api, through which reviews are pulled.</br>
-&nbsp;&#8226;&nbsp;<strong>Facebook Connect Data: </strong> This will likely not need to be changed.  These are fields used to access Facebook's Api, through which reviews are pulled.</br>
+<strong><big> &nbsp;&#8226;&nbsp; Update Minimum Review Rating - </big></strong> This will set a minimal numeric rating for reviews that will be displayed, as well as reviews that will be pulled in for Facebook.  
+Google's Api works differently - five reviews at most can be pulled in, and they cannot be limited by a minimum rating.  However, setting the minimum review limit will still limit which Google reviews will display on the site.</br>
+<strong><big> &nbsp;&#8226;&nbsp; Get New Reviews - </big></strong> Both Facebook and Google reviews must initially be retrieved from their respective Apis, using a slightly different process. While retrieving Facebook reviews 
+is a one click process, retrieving Google Reviews requires an initial click of <strong>'Get New Google Reviews'</strong> after which a hidden button will appear to <strong>'Save Google Reviews'</strong>, which must be clicked to 
+complete the retrieval process.  Once this is done, the reviews have been retrieved and stored, and can be displayed on site.</br>
+<strong><big> &nbsp;&#8226;&nbsp; Updating Reviews - </big></strong> <strong>'Get New Google Reviews'</strong> and <strong>'Get New Facebook Reviews'</strong> can be clicked again after time has passed to retrieve new reviews, 
+which will appear at the top of the reviews, listed as <strong>'New Reviews'</strong> below.</br>
+<strong><big> &nbsp;&#8226;&nbsp; Save New Review Order - </big></strong><strong>Review order must be saved before any reviews will be displayed on site!</strong> The retrieved reviews can be reordered to display in any order by drag and drop.  In addition, reviews can be selected to not display. These reviews will 
+not be deleted, but can be re-activated at any time and again added to the list of reviews displayed.</br>
+<strong><big> &nbsp;&#8226;&nbsp; Setup Steps - </big></strong></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>1. </strong> Make sure to enter Facebook Connect Data if fields are empty </br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>2. </strong> Set minimum review rating - 3 would be recommended</br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>3. </strong> Click <strong>'Get New Google Reviews'</strong>, then <strong>'Save Google Reviews'</strong> </br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>4. </strong> Click <strong>'Get New Facebook Reviews'</strong></br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>5. </strong> Rearrange the order of reviews as they should be displayed, and click <strong>'Do Not Show'</strong> for the reviews that should be hidden</br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>6. </strong> Click <strong>'Save New Review Order'</strong>.  Reviews should now be showing up on site in specified order. 
 </p>
-<a>more</a>
+<!-- <a id="aHideShow" style="font-weight:bold;font-size:1.3em;text-decoration:underline;" class="btn btn-primary"></a> -->
+<button type="button" id="aHideShow" class="myRedButton" style="width:150px;height:35px;"  >Help</button>
 </div>
 
-    <hr>
-    <table>
     </table>
     
     <form action="admin.php?page=dld_manage_facebook_reviews" method="post" enctype="multipart/form-data">
@@ -151,18 +164,6 @@ function dld_setup_facebook_reviews_admin_page(){
 
 <!-- ******************************************** GET NEW REVIEWS ******************************************** -->
 <h2><strong>Get New Reviews:</strong></h2>
-<!-- ******************************************** GET FACEBOOK REVIEWS ******************************************** -->
-<form action="admin.php?page=dld_manage_facebook_reviews" method="post" enctype="multipart/form-data">
-    <table>
-        <tr><td colspan="2">
-            <input type="text" name="refreshReviews" id="txtRefreshReviews" style="display:none;" value="yes">
-        </td></tr>
-        <tr><td colspan="2">
-            <input type="submit" value="Get New Facebook Reviews" name="submit"  id="btnRefreshReviews" class="myButton" style="width:600px;height:35px;"  ></strong>
-        </td></tr>
-    </table>
-</form>
-                </br>
 
 <!-- ******************************************** GET GOOGLE REVIEWS ******************************************** -->
 <form action="admin.php?page=dld_manage_facebook_reviews" method="post" enctype="multipart/form-data">
@@ -178,6 +179,21 @@ function dld_setup_facebook_reviews_admin_page(){
         </td></tr>
     </table>
 </form>
+
+<!-- ******************************************** GET FACEBOOK REVIEWS ******************************************** -->
+<form action="admin.php?page=dld_manage_facebook_reviews" method="post" enctype="multipart/form-data">
+    <table>
+        <tr><td colspan="2">
+            <input type="text" name="refreshReviews" id="txtRefreshReviews" style="display:none;" value="yes">
+        </td></tr>
+        <tr><td colspan="2">
+            <input type="submit" value="Get New Facebook Reviews" name="submit"  id="btnRefreshReviews" class="myButton" style="width:600px;height:35px;"  ></strong>
+        </td></tr>
+    </table>
+</form>
+                </br>
+
+
 
 
 </br>

@@ -85,8 +85,8 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
 
     // only show review if above or equal to minimum review number (set as option)
      if(intval($record->rating) >= intval($i_minimum_review_num)){ 
-        pre_var_dump(intval($record->rating), 'intval record rating : ');
-        pre_var_dump($i_minimum_review_num, 'i_minimum_review_num');
+        // pre_var_dump(intval($record->rating), 'intval record rating : ');
+        // pre_var_dump($i_minimum_review_num, 'i_minimum_review_num');
 
          // GET reviewer's picture using their fb id
          $response = $fb->get('/'.$record->reviewer->id.'/picture?type=large', $page_token); 
@@ -96,7 +96,7 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
          $s_fb_name = $record->reviewer->name;
          $i_fb_rating = $record->rating;
          $s_author_id = $record->reviewer->id;
-         pre_var_dump($s_author_id, 'author id');
+        //  pre_var_dump($s_author_id, 'author id');
          if (isset($record->review_text)) { 
              $s_fb_review_text = RemoveBS($record->review_text);
          } else {

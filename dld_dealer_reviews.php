@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: DLD Facebook Reviews
- * Description: Shows facebook reviews on page
+ * Plugin Name: DLD Dealer Reviews
+ * Description: Retrieves, manages and displays facebook and google reviews on page
  * Version: 1.0
  * Author: Tom Molinaro
  *
@@ -9,41 +9,41 @@
 
 
 // CREATE ADMIN PAGE - main page, used for postback
-function dld_facebook_reviews_admin_menu() {
+function dld_dealer_reviews_admin_menu() {
 
         add_menu_page (
-            'Facebook Reviews Plugin Page',					// string $page_title
-            'Facebook Reviews Plugin',					// string $menu_title
+            'Dealer Reviews Plugin Page',					// string $page_title
+            'Dealer Reviews Plugin',					// string $menu_title
             'read',							// string $capability
-            'dld_manage_facebook_reviews',		// string $menu_slug
-            'dld_facebook_reviews_init',		// callback $function
+            'dld_manage_dealer_reviews',		// string $menu_slug
+            'dld_dealer_reviews_init',		// callback $function
             'dashicons-admin-page',			// string $icon_url
             '94'							// int $position
         );
       
-} add_action( 'admin_menu', 'dld_facebook_reviews_admin_menu' );
+} add_action( 'admin_menu', 'dld_dealer_reviews_admin_menu' );
 
 
 
 // TODO: ACTIVATION script
-function dld_facebook_reviews_activate(){
+function dld_dealer_reviews_activate(){
     $page = get_page_by_title('Dealer Reviews');
     if( empty( $page )){
-        dld_facebook_reviews_add_template_page();
+        dld_dealer_reviews_add_template_page();
     }
 }
-register_activation_hook( __FILE__, 'dld_facebook_reviews_activate' );
+register_activation_hook( __FILE__, 'dld_dealer_reviews_activate' );
 
 
 // TODO: DEACTIVATION script
-function dld_facebook_reviews_deactivate(){
+function dld_dealer_reviews_deactivate(){
     
 }
-register_deactivation_hook( __FILE__, 'dld_facebook_reviews_deactivate' );
+register_deactivation_hook( __FILE__, 'dld_dealer_reviews_deactivate' );
 
 
 
-function dld_facebook_reviews_admin_enqueue_scripts() {
+function dld_dealer_reviews_admin_enqueue_scripts() {
 
     wp_register_style( 'prefix-style', plugins_url('/styles/styles.css', __FILE__) );
     wp_enqueue_style( 'prefix-style', plugins_url('/styles/styles.css', __FILE__) );
@@ -67,22 +67,22 @@ function dld_facebook_reviews_admin_enqueue_scripts() {
     wp_enqueue_script( 'custom-js', plugins_url('/scripts/scripts.js', __FILE__));
 
   
-} add_action( 'admin_enqueue_scripts', 'dld_facebook_reviews_admin_enqueue_scripts' );
+} add_action( 'admin_enqueue_scripts', 'dld_dealer_reviews_admin_enqueue_scripts' );
 
 
 
 // ADD connection to page template
-function dld_facebook_reviews_template( $page_template ){
+function dld_dealer_reviews_template( $page_template ){
     if ( is_page( 'dealer-reviews' ) ) {
         $page_template = dirname( __FILE__ ) . '/templates/template-reviews.php';
     }
     return $page_template;
  }
- add_filter('page_template', 'dld_facebook_reviews_template' );
+ add_filter('page_template', 'dld_dealer_reviews_template' );
 
 
 // INSERT PAGE for plugin
-function dld_facebook_reviews_add_template_page(){
+function dld_dealer_reviews_add_template_page(){
     
       $post = array(
         'post_title'     => "Dealer Reviews", // The title of your post.
@@ -95,14 +95,14 @@ function dld_facebook_reviews_add_template_page(){
     }
 
 // FUNCTION - sets up main admin page
-function dld_facebook_reviews_init(){
+function dld_dealer_reviews_init(){
 
-include_once 'admin/dld_facebook_reviews_admin.php';
+include_once 'admin/dld_dealer_reviews_admin.php';
 include_once 'src/Facebook/autoload.php';
 include_once 'include/DealerReviews.class.php';
 include_once 'include/functions.php';
 
-dld_setup_facebook_reviews_admin_page();
+dld_setup_dealer_reviews_admin_page();
 }
 
     

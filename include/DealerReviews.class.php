@@ -82,8 +82,9 @@ public function show_dealer_review_sortable($b_is_active = false) {
                         <strong>'.$s_reviewer_name.'</strong></br>';
                         $this->reviews_get_stars($i_numeric_rating);
                         echo '</br>
-                        '.$s_review_text.'</br>
-                        POST ID : '.$i_postID.'
+                        '.$s_review_text.'</br>';
+                        // echo 'POST ID : '.$i_postID;
+                        echo '
                         <input type="text" class="DealerReviewPostId" name="postId-'.$i_postID.'" id="'.$i_postID.'" value="'.$i_postID.'" style="display:none;"></input>
                         <input type="text" class="DealerReviewImage" name="imageUrl-'.$i_postID.'" id="imageUrl-'.$i_postID.'" value="'.$s_image_url.'" style="display:none;"></input>
                         <input type="text" class="DealerReviewName" name="name-'.$i_postID.'" id="name-'.$i_postID.'" value="'.$s_reviewer_name.'" style="display:none;"></input>

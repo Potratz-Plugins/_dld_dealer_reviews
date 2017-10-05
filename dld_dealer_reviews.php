@@ -50,6 +50,17 @@ function dld_dealer_reviews_deactivate(){
 register_deactivation_hook( __FILE__, 'dld_dealer_reviews_deactivate' );
 
 
+require 'plugin_update_check.php';
+$MyUpdateChecker = new PluginUpdateChecker_2_0 (
+   'https://kernl.us/api/v1/updates/[[your-plugin-uuid]]/',
+   __FILE__,
+   '_dld_dealer_reviews',
+   1
+);
+// $MyUpdateChecker->purchaseCode = "somePurchaseCode";  <---- optional!
+// $MyUpdateChecker->remoteGetTimeout = 5; <--- optional
+
+
 
 function dld_dealer_reviews_admin_enqueue_scripts() {
 

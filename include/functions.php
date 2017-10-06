@@ -263,7 +263,7 @@ function dld_dealer_reviews_show_all_on_page_template() {
 
     // ************* DISPLAY REVIEWS **************
     // NEW REVIEWS
-    echo '<hr  style="width:100%;" align="left">';
+    // echo '<hr  style="width:100%;" align="left">';
     // ACTIVE REVIEWS
     foreach($a_activeReviewsSorted as $o_activeReview){
         $o_activeReview->show_dealer_review_on_page(true);

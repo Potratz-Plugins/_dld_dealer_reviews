@@ -112,6 +112,7 @@ public function show_dealer_review_on_page(){
     $s_review_type_icon = '<img src="'.$s_full_path_to_icon.'.png" style="height:35px;width:35px;"/>'; 
    
     echo "<div class='rev' >";
+    echo "<div class='MaxWidth'>";
     echo    "<div class='row' >";
     echo        "<div class='col-lg-2' >";
     echo            $s_reviewer_image_display.'</br>';
@@ -131,6 +132,7 @@ public function show_dealer_review_on_page(){
     echo        "</p>";
     echo        "</div>";
     echo    "</div>";
+    echo "</div>";
     echo "</div>";
 }
 

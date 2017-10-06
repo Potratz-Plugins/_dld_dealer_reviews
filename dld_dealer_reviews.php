@@ -11,19 +11,6 @@
  *
  *
  */
- 
-
-
- // KERNEL INTEGRATION
- require 'plugin_update_check.php';
- $MyUpdateChecker = new PluginUpdateChecker_2_0 (
-    'https://kernl.us/api/v1/updates/59d64a4404605933619a0154/',
-    __FILE__,
-    '_dld_dealer_reviews',
-    1
- );
- // $MyUpdateChecker->purchaseCode = "somePurchaseCode";  <---- optional!
- // $MyUpdateChecker->remoteGetTimeout = 5; <--- optional
 
 
 // CREATE ADMIN PAGE - main page, used for postback
@@ -58,9 +45,6 @@ function dld_dealer_reviews_deactivate(){
     
 }
 register_deactivation_hook( __FILE__, 'dld_dealer_reviews_deactivate' );
-
-
-
 
 
 

@@ -1,21 +1,21 @@
 var activeReviewIDs = new Array();
 
 // ****************************************** ONLOAD ******************************************
-$(document).ready(function () {
+jQuery(document).ready(function () {
      // alert('me');
     
     
 
-    $(function() {
-      $( "#sortable" ).sortable();
-      $( "#sortable" ).disableSelection();
+    jQuery(function() {
+      jQuery( "#sortable" ).sortable();
+      jQuery( "#sortable" ).disableSelection();
     });
 
     // AN ITEM POSITION HAS BEEN CHANGED
-    $( "#sortable" ).sortable({
+    jQuery( "#sortable" ).sortable({
         update: function( event, ui ) {
             console.clear();
-            var ul = $(".ulSortable");
+            var ul = jQuery(".ulSortable");
             var li = ul.children(".liSortable");
             // li.detach().sort();
             li.detach();
@@ -35,32 +35,32 @@ $(document).ready(function () {
    logReviewOrder();
    
     // ONCLICK radio button Visible / Do Not Show is clicked
-    $( ".DealerReviewIsVisible" ).click(function( ) {
-        console.log( "VISIBLE? : " + $(this).val() );
-        console.log("ID : " + $(this).attr('name'));
-        var containsThisID = $(this).attr('name');
-        if($(this).val() == 'Hide'){
+    jQuery( ".DealerReviewIsVisible" ).click(function( ) {
+        console.log( "VISIBLE? : " + jQuery(this).val() );
+        console.log("ID : " + jQuery(this).attr('name'));
+        var containsThisID = jQuery(this).attr('name');
+        if(jQuery(this).val() == 'Hide'){
             
             var thisID = 'not set';
 
             thisID = containsThisID.replace('showReview-','');
            // alert(thisID);
         
-            var ulDetachFrom = $(".ulSortable");
-            var ulAppendTo = $(".ulSortableInactive");
+            var ulDetachFrom = jQuery(".ulSortable");
+            var ulAppendTo = jQuery(".ulSortableInactive");
             var li = ulDetachFrom.children("#li-"+ thisID);
             li.detach();
             ulAppendTo.append(li);
             logReviewOrder();
         }
 
-        if($(this).val() == 'Show'){
+        if(jQuery(this).val() == 'Show'){
             var thisID = 'not set';
             thisID = containsThisID.replace('showReview-','');
            // alert(thisID);
             
-            var ulDetachFrom = $(".ulSortableInactive");
-            var ulAppendTo = $(".ulSortable");
+            var ulDetachFrom = jQuery(".ulSortableInactive");
+            var ulAppendTo = jQuery(".ulSortable");
             var li = ulDetachFrom.children("#li-"+ thisID);
             li.detach();
             ulAppendTo.append(li);
@@ -71,9 +71,9 @@ $(document).ready(function () {
     });
     
     // ONCLICK radio button Visible / Do Not Show is clicked
-    $( "#btnShowAllReviews" ).click(function( ) {
+    jQuery( "#btnShowAllReviews" ).click(function( ) {
         alert('hi');
-        $( "#DROrderByPostID" ).val('');
+        jQuery( "#DROrderByPostID" ).val('');
         submit();
        // console.log('ALL IDs : ');
        // console.log(activeReviewIDs);
@@ -82,17 +82,17 @@ $(document).ready(function () {
 
     
 
-    $('#aHideShow').click(function() {
+    jQuery('#aHideShow').click(function() {
         var moreArrow = String.fromCharCode(62);
         var lessArrow = String.fromCharCode(60);
-        var p = $('#aHideShow').prev('p')
+        var p = jQuery('#aHideShow').prev('p')
         var lineheight = parseInt(p.css('line-height'))
         if (parseInt(p.css('height')) == lineheight*0) {
            p.css('height','auto');
-           $(this).text('Hide Help')
+           jQuery(this).text('Hide Help')
         } else {
            p.css('height',lineheight*0+'px');
-           $(this).text('Show Help')
+           jQuery(this).text('Show Help')
         }
     });
     
@@ -104,53 +104,53 @@ function logReviewOrder(){
     // alert('sorted');
 
     // reset text areas for active and inactive ids
-     $( "#DROrderByPostID" ).val('');
-     $( "#DRInactiveByPostID" ).val('');
+     jQuery( "#DROrderByPostID" ).val('');
+     jQuery( "#DRInactiveByPostID" ).val('');
     // create arrays to hold active/inactive ids
     activeReviewIDs = [];
     inactiveReviewIDs = [];
     
    
 
-    $( ".liSortable" ).each(function( index ) {
-        var thisPostID = $(this).find(".DealerReviewPostId").val();
-        var parentClass = $(this).parent().attr('class');
+    jQuery( ".liSortable" ).each(function( index ) {
+        var thisPostID = jQuery(this).find(".DealerReviewPostId").val();
+        var parentClass = jQuery(this).parent().attr('class');
         
         // IF the review is not inactive, push to activeReviewIDs array, add id to text area for active ids, plus comma
         if(parentClass != 'ulSortableInactive'){
             activeReviewIDs.push(thisPostID);
-             $( "#DROrderByPostID" ).val($("#DROrderByPostID").val()  + thisPostID + ',');
+             jQuery( "#DROrderByPostID" ).val(jQuery("#DROrderByPostID").val()  + thisPostID + ',');
         }
         // ELSE review is inactive, push to inactiveReviewIDs array, add to inactive reviews text area
         else {
             inactiveReviewIDs.push(thisPostID);
-            $( "#DRInactiveByPostID" ).val($("#DRInactiveByPostID").val()  + thisPostID + ',');
+            jQuery( "#DRInactiveByPostID" ).val(jQuery("#DRInactiveByPostID").val()  + thisPostID + ',');
         }
         
         
-        //console.log( index + ": " + $(this).find(".DealerReviewPostId").val() );
-        // console.log( index + ": " + $(this).find(".DealerReviewIsVisible").val() );
-        // console.log( index + ": " + $(this).find(".DealerReviewImage").val() );
-        // console.log( index + ": " + $(this).find(".DealerReviewName").val() );
-        // console.log( index + ": " + $(this).find(".DealerReviewRating").val() );
-        // console.log( index + ": " + $(this).find(".DealerReviewText").text() );
+        //console.log( index + ": " + jQuery(this).find(".DealerReviewPostId").val() );
+        // console.log( index + ": " + jQuery(this).find(".DealerReviewIsVisible").val() );
+        // console.log( index + ": " + jQuery(this).find(".DealerReviewImage").val() );
+        // console.log( index + ": " + jQuery(this).find(".DealerReviewName").val() );
+        // console.log( index + ": " + jQuery(this).find(".DealerReviewRating").val() );
+        // console.log( index + ": " + jQuery(this).find(".DealerReviewText").text() );
 
-        // console.log('Parents class : ' + $(this).parent().attr('class'));
+        // console.log('Parents class : ' + jQuery(this).parent().attr('class'));
         
       });
       
-      var textAreaValue = $( "#DROrderByPostID" ).val();
+      var textAreaValue = jQuery( "#DROrderByPostID" ).val();
       //REMOVE TRAILING COMMA
       if(textAreaValue.length > 0){
          var textAreaValueTrimLastComma = textAreaValue.substring(0,textAreaValue.length - 1);
-          $("#DROrderByPostID").val(textAreaValueTrimLastComma);
+          jQuery("#DROrderByPostID").val(textAreaValueTrimLastComma);
       }
 
-      var textAreaValueInactive = $( "#DRInactiveByPostID" ).val();
+      var textAreaValueInactive = jQuery( "#DRInactiveByPostID" ).val();
       //REMOVE TRAILING COMMA
       if(textAreaValueInactive.length > 0){
          var textAreaInactiveValueTrimLastComma = textAreaValueInactive.substring(0,textAreaValueInactive.length - 1);
-          $("#DRInactiveByPostID").val(textAreaInactiveValueTrimLastComma);
+          jQuery("#DRInactiveByPostID").val(textAreaInactiveValueTrimLastComma);
       }
       
     //   console.log('ALL IDs : ');
@@ -164,11 +164,11 @@ function getLoginStatus(){
    FB.getLoginStatus(function (response) {
        if (response.authResponse) {
            var s_accessToken = response.authResponse.accessToken;
-         // $('#divTest').val(response.authResponse.accessToken);
+         // jQuery('#divTest').val(response.authResponse.accessToken);
            var redirectLocation = window.location+"?token="+s_accessToken;
             window.location = redirectLocation;
        } else {
-      // $('#divTest').val('no token');
+      // jQuery('#divTest').val('no token');
        }
    });
 }
@@ -177,7 +177,7 @@ function getLoginStatus(){
 function logout(){
    FB.logout(function(response){
        document.getElementById('status').innerHTML = '</br>logged out';
-      // $('#divTest').val('no token');
+      // jQuery('#divTest').val('no token');
    });
 }
 

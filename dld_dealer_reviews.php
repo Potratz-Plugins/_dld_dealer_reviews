@@ -58,13 +58,6 @@ function dld_dealer_reviews_admin_enqueue_scripts() {
 
     wp_enqueue_script('jquery');
 
-    // wp_register_script('load_js', plugins_url('/scripts/jquery-1.12.4.min.js', __FILE__));
-    // wp_enqueue_script('load_js', plugins_url('/scripts/jquery-1.12.4.min.js', __FILE__));
-
-    // SORTABLE SCRIPT - NOT NEEDED IN THIS FORMAT - see next uncommented line - 'jquery-ui-sortable'
-    // wp_register_script('load_js', plugins_url('/scripts/jquery-ui.js', __FILE__));
-    // wp_enqueue_script('load_js', plugins_url('/scripts/jquery-ui.js', __FILE__));
-
     wp_enqueue_script( 'jquery-ui-sortable' );
 
     wp_register_script( 'prefix-style', plugins_url('/scripts/fb_api.js', __FILE__) );

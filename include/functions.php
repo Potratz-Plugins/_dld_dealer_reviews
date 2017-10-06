@@ -68,6 +68,11 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
                 // TEST - show page token -   echo '<pre>';  echo '</br>page token : </br>';  var_dump($page_token); echo '</pre>';
      $response = $fb->get('/'.$s_pageID.'/ratings', $page_token);
      $json = json_decode($response->getBody());
+
+     $responseAvg = $fb->get('/'.$s_pageID.'?fields=overall_star_rating', $page_token); 
+     $jsonAvg = json_decode($responseAvg->getBody());
+     $s_averageFacebookReview = strval($jsonAvg->overall_star_rating);
+     update_option('FacebookAverageReviewOptionValue', $s_averageFacebookReview, false);
                 // TEST - show response -   echo '<pre>'; echo '</br>ratings response: </br>'; var_dump($response); echo '</br>json: </br>'; var_dump($json);
  } catch(Facebook\Exceptions\FacebookResponseException $e){
      // SHOW ERROR if graph returns an error
@@ -88,7 +93,11 @@ function refresh_dld_fb_reviews($s_pageID, $s_appID, $s_appSecret, $s_llAccessTo
         // pre_var_dump(intval($record->rating), 'intval record rating : ');
         // pre_var_dump($i_minimum_review_num, 'i_minimum_review_num');
 
+        //    /{page-id}?fields=overall_star_rating
+
          // GET reviewer's picture using their fb id
+         
+        
          $response = $fb->get('/'.$record->reviewer->id.'/picture?type=large', $page_token); 
          $graphNode = $response->getHeaders();
          $s_image_url = $graphNode['Location'];
@@ -203,6 +212,25 @@ function initMap() {
 
 
 function dld_dealer_reviews_show_all_on_page_template() {
+
+    // DO WE SHOW GOOGLE / FACEBOOK REVIEWS
+    $b_showFacebook = true;
+    $b_showGoogle = true;
+    if(get_option('ShowFacebookReviewsOptionValue') === false){
+        update_option('ShowFacebookReviewsOptionValue', 'true', false);
+    }
+    if(get_option('ShowGoogleReviewsOptionValue') === false){
+        update_option('ShowGoogleReviewsOptionValue', 'true', false);
+    }
+    $s_showFacebookReviews = get_option('ShowFacebookReviewsOptionValue');
+    $s_showGoogleReviews = get_option('ShowGoogleReviewsOptionValue');
+    if($s_showFacebookReviews == 'false'){
+        $b_showFacebook = false;
+    }
+    if($s_showGoogleReviews == 'false'){
+        $b_showGoogle = false;
+    }
+
    
     // GET MINIMUM REVIEW RATING
     if(get_option('DealerReviewMinimumRatingOptionValue') === false){
@@ -210,6 +238,7 @@ function dld_dealer_reviews_show_all_on_page_template() {
     }
     $i_minimum_review_num = intval(get_option('DealerReviewMinimumRatingOptionValue'));
     
+    // GET REVIEW RAW DATA (not objects yet)
     $a_allReviewsFromDB = dld_dealer_reviews_get_all_reviews_raw_data();
 
     // pre_var_dump($a_allReviewsFromDB, 'all reviews from db');
@@ -232,7 +261,6 @@ function dld_dealer_reviews_show_all_on_page_template() {
 
        // pre_var_dump($o_ReviewData, 'review data');
         // SET object variables
-        // TODO: NOT IN post_type
         $s_author_id = $o_ReviewData->post_mime_type;
         $s_review_type = $o_ReviewData->post_status;
         $s_fb_name = $o_ReviewData->post_excerpt;
@@ -249,6 +277,7 @@ function dld_dealer_reviews_show_all_on_page_template() {
         // IF the post id is found in array of active review post id's
         
         if(strpos($s_postIdsOfActiveReviews, $s_postIDString) !== false){
+            if(($s_review_type == 'facebook' && $b_showFacebook) || ($s_review_type == 'google' && $b_showGoogle))
             $a_activeReviews[] = $o_Review;
         } 
     }
@@ -261,12 +290,17 @@ function dld_dealer_reviews_show_all_on_page_template() {
         }
     }
 
+    $b_reviewsHaveDisplayed = false;
     // ************* DISPLAY REVIEWS **************
     // NEW REVIEWS
     // echo '<hr  style="width:100%;" align="left">';
     // ACTIVE REVIEWS
     foreach($a_activeReviewsSorted as $o_activeReview){
         $o_activeReview->show_dealer_review_on_page(true);
+        $b_reviewsHaveDisplayed = true;
+    }
+    if(!$b_reviewsHaveDisplayed){
+        echo '</br></br></br></br></br></br><div style="margin:auto;text-align:center;"><h1>No Reviews To Display.</h1></div></br></br></br></br></br></br></br></br>';
     }
 }
 

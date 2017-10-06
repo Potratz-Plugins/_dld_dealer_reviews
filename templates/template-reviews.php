@@ -26,6 +26,101 @@ $lat = '32.3669454';
 $long = '-86.2096623';
 $placesID = 'ChIJd3QeN3YpjIgR9-EZmWtzRIQ';
 
+
+if(get_option('FacebookAverageReviewOptionValue') === false){
+  update_option('FacebookAverageReviewOptionValue', '0', false);
+}
+if(get_option('GoogleAverageReviewOptionValue') === false){
+  update_option('GoogleAverageReviewOptionValue', '0', false);
+}
+
+
+$s_googleAverageReview = get_option('GoogleAverageReviewOptionValue');    
+$f_facebookAverageReview = floatval(get_option('FacebookAverageReviewOptionValue'));  
+$s_showFacebookAverageReview = get_option('ShowFacebookAverageReviewOptionValue');
+$s_showGoogleAverageReview = get_option('ShowGoogleAverageReviewOptionValue');
+$s_facebook_average_review_span = '';
+
+// SET FACEBOOK AVERAGE RATING html
+for ($i = 1; $i <= 5; $i++) {
+  if ($i <= $f_facebookAverageReview) {
+    $s_facebook_average_review_span = $s_facebook_average_review_span.'<i class="star fa fa-star" style="color:blue"></i>';
+  } else {
+    if (($i - 1) < $f_facebookAverageReview) {
+      $s_facebook_average_review_span = $s_facebook_average_review_span.'<i class="star fa fa-star-half-o" style="color:blue"></i>';
+    } else {
+      $s_facebook_average_review_span = $s_facebook_average_review_span.'<i class="star fa fa-star-o" style="color:blue"></i>';
+    }
+  }
+}
+
+
+ // DO WE SHOW GOOGLE / FACEBOOK REVIEWS
+ $b_showFacebook = true;
+ $b_showGoogle = true;
+ if(get_option('ShowFacebookReviewsOptionValue') === false){
+     update_option('ShowFacebookReviewsOptionValue', 'true', false);
+ }
+ if(get_option('ShowGoogleReviewsOptionValue') === false){
+     update_option('ShowGoogleReviewsOptionValue', 'true', false);
+ }
+ $s_showFacebookReviews = get_option('ShowFacebookReviewsOptionValue');
+ $s_showGoogleReviews = get_option('ShowGoogleReviewsOptionValue');
+ if($s_showFacebookReviews == 'false'){
+     $b_showFacebook = false;
+     echo '
+     <style>
+     .facebook{
+       display:none; 
+     }
+     </style>
+      ';
+ }
+ if($s_showGoogleReviews == 'false'){
+     $b_showGoogle = false;
+     echo '
+    <style>
+    .google{
+      display:none; 
+    }
+    </style>
+     ';
+ }
+
+
+ // DO WE SHOW GOOGLE / FACEBOOK AVERAGE REVIEWS
+ $b_showFacebook = true;
+ $b_showGoogle = true;
+ if(get_option('ShowFacebookAverageReviewOptionValue') === false){
+  update_option('ShowFacebookAverageReviewOptionValue', 'true', false);
+}
+if(get_option('ShowGoogleAverageReviewOptionValue') === false){
+  update_option('ShowGoogleAverageReviewOptionValue', 'true', false);
+}
+ $s_showFacebookAverageReviews = get_option('ShowFacebookAverageReviewOptionValue');
+ $s_showGoogleAverageReviews = get_option('ShowGoogleAverageReviewOptionValue');
+ if($s_showFacebookAverageReviews == 'false'){
+     $b_showFacebookAverageReviews = false;
+     echo '
+     <style>
+     .facebookOverall{
+       display:none; 
+     }
+     </style>
+      ';
+ }
+ if($s_showGoogleAverageReviews == 'false'){
+     $b_showGoogleAverageReviews = false;
+     echo '
+    <style>
+    .googleOverall{
+      display:none; 
+    }
+    </style>
+     ';
+ }
+
+
 ?>
 
 <div class="page-content clearfix">
@@ -36,15 +131,15 @@ $placesID = 'ChIJd3QeN3YpjIgR9-EZmWtzRIQ';
     <div class="col-sm-6 col-xs-12">
       <div class="google">
         <img class="googleImg" src="/wp-content/plugins/_dld_dealer_reviews/src/images/googlelogo.png" />
-        <div id="googleRating"></div>
-        <p><a class="googleLink" href="<?php echo $googleLink; ?>" target="_blank">Read All Google Reviews</a></p>
+        <div id="googleRating" class="googleOverall"></div>
+        <p class="googleOverall"><a class="googleLink" href="<?php echo $googleLink; ?>" target="_blank">Read All Google Reviews</a></p>
       </div>
     </div>
     <div class="col-sm-6 col-xs-12">
       <div class="facebook">
         <img class="facebookImg" src="/wp-content/plugins/_dld_dealer_reviews/src/images/facebook-logo.png" />
-        <div id="facebookRating"></div>
-        <p><a class="facebookLink" href="<?php echo $facebookLink; ?>" target="_blank">Read All Facebook Reviews</a></p>
+        <div class="facebookOverall" id="facebookRating" style="color:blue"><?php echo $f_facebookAverageReview.' '.$s_facebook_average_review_span.' Rating'; ?></div>
+        <p class="facebookOverall"><a class="facebookLink" href="<?php echo $facebookLink; ?>" target="_blank">Read All Facebook Reviews</a></p>
       </div>
     </div><div class="clear"></div>
   </div>

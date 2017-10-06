@@ -33,6 +33,24 @@ function dld_setup_dealer_reviews_admin_page(){
     if(get_option('DealerReviewMinimumRatingOptionValue') === false){
         update_option('DealerReviewMinimumRatingOptionValue', '3', false);
     }
+    if(get_option('FacebookAverageReviewOptionValue') === false){
+        update_option('FacebookAverageReviewOptionValue', '0', false);
+    }
+    if(get_option('GoogleAverageReviewOptionValue') === false){
+        update_option('GoogleAverageReviewOptionValue', '0', false);
+    }
+    if(get_option('ShowFacebookAverageReviewOptionValue') === false){
+        update_option('ShowFacebookAverageReviewOptionValue', 'true', false);
+    }
+    if(get_option('ShowGoogleAverageReviewOptionValue') === false){
+        update_option('ShowGoogleAverageReviewOptionValue', 'true', false);
+    }
+    if(get_option('ShowFacebookReviewsOptionValue') === false){
+        update_option('ShowFacebookReviewsOptionValue', 'true', false);
+    }
+    if(get_option('ShowGoogleReviewsOptionValue') === false){
+        update_option('ShowGoogleReviewsOptionValue', 'true', false);
+    }
 
     $s_pageID =  get_option('FacebookPageIDOptionValue');
     $s_appID = get_option('FacebookAppIDOptionValue');
@@ -40,7 +58,14 @@ function dld_setup_dealer_reviews_admin_page(){
     $s_llAccessToken = get_option('FacebookLLAccessTokenOptionValue');
     $i_minimum_review_num = intval(get_option('DealerReviewMinimumRatingOptionValue'));
     $i_mrn = $i_minimum_review_num;
-    
+    $f_googleAverageReview = floatval(get_option('GoogleAverageReviewOptionValue'));    
+    $f_facebookAverageReview = floatval(get_option('FacebookAverageReviewOptionValue'));  
+    $s_showFacebookAverageReview = get_option('ShowFacebookAverageReviewOptionValue');
+    $s_showGoogleAverageReview = get_option('ShowGoogleAverageReviewOptionValue');
+    $s_showFacebookReviews = get_option('ShowFacebookReviewsOptionValue');
+    $s_showGoogleReviews = get_option('ShowGoogleReviewsOptionValue');
+
+   
 
     ?>
 <hr>
@@ -164,10 +189,143 @@ not be deleted, but can be re-activated at any time and again added to the list 
 <hr style="width:80%;" align="left">
 
 
+
+
+
+
 <!-- ******************************************** GET NEW REVIEWS ******************************************** -->
-<h2><strong>Get New Reviews:</strong></h2>
+<h2><strong>Show Review Types:</strong></h2>
+
+<!-- ******************************************** DISPLAY AVERAGE REVIEWS ? ******************************************** -->
+<?php
+    if(isset($_POST["GoogleReviewsVisible"])){
+        $s_showGoogleReviews = htmlspecialchars($_POST["GoogleReviewsVisible"]);
+        update_option('ShowGoogleReviewsOptionValue', $s_showGoogleReviews, false);
+    }
+    if(isset($_POST["FacebookReviewsVisible"])){
+        $s_showFacebookReviews = htmlspecialchars($_POST["FacebookReviewsVisible"]);
+        update_option('ShowFacebookReviewsOptionValue', $s_showFacebookReviews, false);
+    }
+
+
+    $s_showFacebookReviews = get_option('ShowFacebookReviewsOptionValue');
+    $s_showGoogleReviews = get_option('ShowGoogleReviewsOptionValue');
+
+?>
+<form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
+    <table>
+        <tr><td style="font-weight:bold;font-size:1.2em">
+            SHOW GOOGLE REVIEWS: 
+        </td><td style="font-weight:bold;font-size:1.2em">
+            <?php if($s_showGoogleReviews == 'true') { ?>
+                <input type="radio" class="ReviewsVisible" name="GoogleReviewsVisible" value="true" checked="checked"> Visible </input>
+                <input type="radio" class="ReviewsVisible" name="GoogleReviewsVisible" value="false"> Do Not Show</input>
+            <?php } else { ?>
+                <input type="radio" class="ReviewsVisible" name="GoogleReviewsVisible" value="true" > Visible </input>
+                <input type="radio" class="ReviewsVisible" name="GoogleReviewsVisible" value="false" checked="checked"> Do Not Show</input>
+            <?php } ?>
+        </td></tr>
+        <tr><td style="font-weight:bold;font-size:1.2em">
+            SHOW FACEBOOK REVIEWS: 
+        </td><td style="font-weight:bold;font-size:1.2em;vertical-align:bottom;">
+            <?php if($s_showFacebookReviews == 'true') { ?>
+                <input type="radio" class="ReviewsVisible" name="FacebookReviewsVisible" value="true" checked="checked"> Visible </input>
+                <input type="radio" class="ReviewsVisible" name="FacebookReviewsVisible" value="false"> Do Not Show</input>
+            <?php } else { ?>
+                <input type="radio" class="ReviewsVisible" name="FacebookReviewsVisible" value="true" > Visible </input>
+                <input type="radio" class="ReviewsVisible" name="FacebookReviewsVisible" value="false" checked="checked"> Do Not Show</input>
+            <?php } ?></br></br>
+        </td></tr>
+        <tr><td colspan="2">
+            <input type="submit" value="Update Show Review Types" name="submit"  id="btnUpdateAverageReviewDisplay" class="myButton" style="width:600px;height:35px;"  ></strong>
+        </td></tr>
+    </table>
+</form>
+</br>
+<hr style="width:80%;" align="left">
+</br>
+
+
+
+
+
+
+
+<!-- ******************************************** SHOW / HIDE FACEBOOK / GOOGLE REVIEWS ******************************************** -->
+<h2><strong>Show Average Reviews:</strong></h2>
+
+<!-- ******************************************** DISPLAY AVERAGE REVIEWS ? ******************************************** -->
+<?php
+    if(isset($_POST["GoogleAverageReviewVisible"])){
+        $s_showGoogleAverageReview = htmlspecialchars($_POST["GoogleAverageReviewVisible"]);
+        update_option('ShowGoogleAverageReviewOptionValue', $s_showGoogleAverageReview, false);
+    }
+    if(isset($_POST["FacebookAverageReviewVisible"])){
+        $s_showFacebookAverageReview = htmlspecialchars($_POST["FacebookAverageReviewVisible"]);
+        update_option('ShowFacebookAverageReviewOptionValue', $s_showFacebookAverageReview, false);
+    }
+    if(isset($_POST["GoogleAverageReviewValue"])){
+        $f_googleAverageReview = htmlspecialchars($_POST["GoogleAverageReviewValue"]);
+        update_option('GoogleAverageReviewOptionValue', $f_googleAverageReview, false);
+    }
+
+  
+
+?>
+<form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
+    <table>
+        <tr><td style="font-weight:bold;font-size:1.2em">
+            AVERAGE GOOGLE REVIEW: 
+            <span name="GoogleAverageReview" id="spanGoogleAverageReview" style="color:red">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $f_googleAverageReview ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            
+        </td><td style="font-weight:bold;font-size:1.2em">
+            <?php if($s_showGoogleAverageReview == 'true') { ?>
+                <input type="radio" class="AverageReviewVisible" name="GoogleAverageReviewVisible" value="true" checked="checked"> Visible </input>
+                <input type="radio" class="AverageReviewVisible" name="GoogleAverageReviewVisible" value="false"> Do Not Show</input>
+            <?php } else { ?>
+                <input type="radio" class="AverageReviewVisible" name="GoogleAverageReviewVisible" value="true" > Visible </input>
+                <input type="radio" class="AverageReviewVisible" name="GoogleAverageReviewVisible" value="false" checked="checked"> Do Not Show</input>
+            <?php } ?>
+        </td></tr>
+        <?php
+            if($f_googleAverageReview == '0'){
+                echo '
+                <tr><td colspan="2">
+                    <input type="submit" value="Get Average Google Review" name="submit"  id="btnUpdateShowReviewtypes" class="myRedButton" style="width:300px;height:30px;"  >
+                    <hr style="width:80%;" align="left">
+                </td></tr>
+                ';
+            }
+        ?>
+
+        <tr><td style="font-weight:bold;font-size:1.2em">
+            AVERAGE FACEBOOK REVIEW: 
+            <span name="FacebookAverageReview" id="spanFacebookAverageReview" style="color:darkblue">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $f_facebookAverageReview; ?>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </td><td style="font-weight:bold;font-size:1.2em;vertical-align:bottom;">
+            <?php if($s_showFacebookAverageReview == 'true') { ?>
+                <input type="radio" class="AverageReviewVisible" name="FacebookAverageReviewVisible" value="true" checked="checked"> Visible </input>
+                <input type="radio" class="AverageReviewVisible" name="FacebookAverageReviewVisible" value="false"> Do Not Show</input>
+            <?php } else {  ?>
+                <input type="radio" class="AverageReviewVisible" name="FacebookAverageReviewVisible" value="true" > Visible </input>
+                <input type="radio" class="AverageReviewVisible" name="FacebookAverageReviewVisible" value="false" checked="checked"> Do Not Show</input>
+            <?php } ?></br></br>
+        </td></tr>
+        <tr><td colspan="2">
+            <input type="text" value="<?php echo $f_googleAverageReview; ?>" name="GoogleAverageReviewValue" id="GoogleAverageReviewValue" style="display:none" ></input></br>
+            <input type="submit" value="Update Average Review Display" name="submit"  id="btnUpdateShowReviewtypes" class="myButton" style="width:600px;height:35px;"  ></strong>
+        </td></tr>
+    </table>
+</form>
+</br>
+<hr style="width:80%;" align="left">
+</br>
+
+
+
+<!-- ******************************************** GET NEW REVIEWS ******************************************** -->
 
 <!-- ******************************************** GET GOOGLE REVIEWS ******************************************** -->
+<h2><strong>Get New Reviews:</strong></h2>
 <form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
     <table>
         <tr><td colspan="2">
@@ -177,7 +335,7 @@ not be deleted, but can be re-activated at any time and again added to the list 
         <tr><td colspan="2">
             <input type="submit" value="Get New Google Reviews" name="submit"  id="btnRefreshGoogleReviews" class="myRedButton" style="width:600px;height:35px;"  >
             <h2 id="spanGoogleReviewsResults" style="font-weight:bold;display:inline;"></h2>
-            <input type="submit" value="Save Google Reviews" name="submit"  id="btnSaveGoogleReviews" class="myRedButton" style="width:50%;height:35px;display:none;"  >
+            <input type="submit" value="Save Google Reviews" name="submit"  id="btnSaveGoogleReviews" class="myRedButton" style="width:300px;height:30px;display:none;"  >
         </td></tr>
     </table>
 </form>
@@ -279,7 +437,7 @@ if ($s_RefreshReviews == 'yes'){
         echo "
         <script>
             document.getElementById('txtRefreshReviews').value = 'no';
-            document.getElementById('btnRefreshReviews').click();
+            // document.getElementById('btnRefreshReviews').click();
             var x = false;
         </script>";
         
@@ -340,4 +498,61 @@ if ($s_saveReviewOrder == 'yes'){
 
 }
 
+
+$lat = '32.3669454';
+$long = '-86.2096623';
+$placesID = 'ChIJd3QeN3YpjIgR9-EZmWtzRIQ';
 ?>
+
+
+
+
+
+<section>
+  <div id="map" style="display:hidden"></div>
+  <div id="reviews" style="display:hidden"></div>
+</section>
+
+</div>
+
+<script>
+// iniMap();
+function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: <?php echo $lat; ?>, lng: <?php echo $long; ?>},
+          zoom: 17,
+          scrollwheel: false,
+        });
+        var infowindow = new google.maps.InfoWindow();
+        var service = new google.maps.places.PlacesService(map);
+        service.getDetails({
+          placeId: '<?php echo $placesID; ?>'
+        }, function(place, status) {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+            var marker = new google.maps.Marker({
+              map: map,
+              position: place.geometry.location
+            });
+            var rev = place.reviews;
+            var rate_avg = place.rating;
+            var place = place.name;
+          }
+            var rating = document.getElementById('GoogleAverageReviewValue');
+            var reviews = document.getElementById('reviews');
+            var veh_stars = '';
+        for (i = 1; i <= 5; i++) {
+          if (i <= rate_avg) {
+            veh_stars += '<i class="star fa fa-star"></i>';
+          } else {
+            if ((i - 1) < rate_avg) {
+              veh_stars += '<i class="star fa fa-star-half-o"></i>';
+            } else {
+              veh_stars += '<i class="star fa fa-star-o"></i>';
+            }
+          }
+        }
+        rating.value = rate_avg;
+        });
+      }
+    </script>
+<script async defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDULu7XpqWlJZxNl9ZWcL5aQmt6Ra9OzjM&libraries=places&callback=initMap"></script>

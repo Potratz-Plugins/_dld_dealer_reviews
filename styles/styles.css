@@ -32,9 +32,9 @@
 	background:linear-gradient(to bottom, #2e466e 5%, #415989 100%);
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#2e466e', endColorstr='#415989',GradientType=0);
 	background-color:#2e466e;
-	-moz-border-radius:17px;
-	-webkit-border-radius:17px;
-	border-radius:17px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
 	border:1px solid #1f2f47;
 	display:inline-block;
 	cursor:pointer;
@@ -64,9 +64,9 @@
 	-webkit-box-shadow:inset 0px 34px 0px -15px #b54b3a;
 	box-shadow:inset 0px 34px 0px -15px #b54b3a;
 	background-color:#a73f2d;
-	-moz-border-radius:17px;
-	-webkit-border-radius:17px;
-	border-radius:17px;
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
 	border:1px solid #241d13;
 	display:inline-block;
 	cursor:pointer;

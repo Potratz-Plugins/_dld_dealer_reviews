@@ -75,8 +75,10 @@ function dld_setup_dealer_reviews_admin_page(){
 
 <p class="expandableP">
 <strong><big> &nbsp;&#8226;&nbsp; Facebook Connect Data - </big></strong> This will likely not need to be changed.  These are fields used to access Facebook's Api, through which reviews are pulled.</br>
-<strong><big> &nbsp;&#8226;&nbsp; Update Minimum Review Rating - </big></strong> This will set a minimal numeric rating for reviews that will be displayed, as well as reviews that will be pulled in for Facebook.  
+<strong><big> &nbsp;&#8226;&nbsp; Set Minimum Review Rating - </big></strong> This will set/update a minimal numeric rating for reviews that will be displayed, as well as reviews that will be pulled in for Facebook.  
 Google's Api works differently - five reviews at most can be pulled in, and they cannot be limited by a minimum rating.  However, setting the minimum review limit will still limit which Google reviews will display on the site.</br>
+<strong><big> &nbsp;&#8226;&nbsp; Show Review Types / Show Average Reviews - </big></strong> All Facebook or Google reviews can be hidden from display on page.  Also the average review section which include a link to additional 
+reviews can be hidden for each type of review.</br>
 <strong><big> &nbsp;&#8226;&nbsp; Get New Reviews - </big></strong> Both Facebook and Google reviews must initially be retrieved from their respective Apis, using a slightly different process. While retrieving Facebook reviews 
 is a one click process, retrieving Google Reviews requires an initial click of <strong>'Get New Google Reviews'</strong> after which a hidden button will appear to <strong>'Save Google Reviews'</strong>, which must be clicked to 
 complete the retrieval process.  Once this is done, the reviews have been retrieved and stored, and can be displayed on site.</br>

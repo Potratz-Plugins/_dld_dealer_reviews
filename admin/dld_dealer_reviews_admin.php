@@ -214,7 +214,7 @@ not be deleted, but can be re-activated at any time and again added to the list 
 ?>
 <form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
     <table>
-        <tr><td style="font-weight:bold;font-size:1.2em">
+        <tr><td style="font-weight:bold;font-size:1.2em;">
             SHOW GOOGLE REVIEWS: 
         </td><td style="font-weight:bold;font-size:1.2em">
             <?php if($s_showGoogleReviews == 'true') { ?>
@@ -269,8 +269,6 @@ not be deleted, but can be re-activated at any time and again added to the list 
         update_option('GoogleAverageReviewOptionValue', $f_googleAverageReview, false);
     }
 
-  
-
 ?>
 <form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
     <table>
@@ -308,8 +306,18 @@ not be deleted, but can be re-activated at any time and again added to the list 
             <?php } else {  ?>
                 <input type="radio" class="AverageReviewVisible" name="FacebookAverageReviewVisible" value="true" > Visible </input>
                 <input type="radio" class="AverageReviewVisible" name="FacebookAverageReviewVisible" value="false" checked="checked"> Do Not Show</input>
-            <?php } ?></br></br>
+            <?php } ?>
         </td></tr>
+        <?php
+            if($f_facebookAverageReview == '0'){
+                echo '
+                <tr><td colspan="2">
+                    <input type="submit" value="Get Average Facebook Review" name="submit"  id="btnUpdateShowReviewtypes2" class="myButton" style="width:300px;height:30px;"  >
+                    <hr style="width:80%;" align="left">
+                </td></tr>
+                ';
+            }
+        ?>
         <tr><td colspan="2">
             <input type="text" value="<?php echo $f_googleAverageReview; ?>" name="GoogleAverageReviewValue" id="GoogleAverageReviewValue" style="display:none" ></input></br>
             <input type="submit" value="Update Average Review Display" name="submit"  id="btnUpdateShowReviewtypes" class="myButton" style="width:600px;height:35px;"  ></strong>

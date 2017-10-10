@@ -50,22 +50,28 @@ register_deactivation_hook( __FILE__, 'dld_dealer_reviews_deactivate' );
 
 function dld_dealer_reviews_admin_enqueue_scripts() {
 
-    wp_register_style( 'prefix-style', plugins_url('/styles/styles.css', __FILE__) );
-    wp_enqueue_style( 'prefix-style', plugins_url('/styles/styles.css', __FILE__) );
+    if ( preg_match( '/dld_manage_dealer_reviews/i', $s_PageTitle ) ) {
+        wp_register_style( 'prefix-style', plugins_url('/styles/styles.css', __FILE__) );
+        wp_enqueue_style( 'prefix-style', plugins_url('/styles/styles.css', __FILE__) );
+    
+        wp_register_style( 'prefix-style', plugins_url('/styles/jquery-ui.css', __FILE__) );
+        wp_enqueue_style( 'prefix-style', plugins_url('/styles/jquery-ui.css', __FILE__) );
+    
+        wp_enqueue_script('jquery');
+    
+        wp_enqueue_script( 'jquery-ui-sortable' );
+    
+        wp_register_script( 'prefix-style', plugins_url('/scripts/fb_api.js', __FILE__) );
+        wp_enqueue_script( 'prefix-style', plugins_url('/scripts/fb_api.js', __FILE__) );
+       
+        wp_register_script( 'custom-js', plugins_url('/scripts/scripts.js', __FILE__));
+        wp_enqueue_script( 'custom-js', plugins_url('/scripts/scripts.js', __FILE__));
+    
+	} else {
+		return;
+	}
 
-    wp_register_style( 'prefix-style', plugins_url('/styles/jquery-ui.css', __FILE__) );
-    wp_enqueue_style( 'prefix-style', plugins_url('/styles/jquery-ui.css', __FILE__) );
-
-    wp_enqueue_script('jquery');
-
-    wp_enqueue_script( 'jquery-ui-sortable' );
-
-    wp_register_script( 'prefix-style', plugins_url('/scripts/fb_api.js', __FILE__) );
-    wp_enqueue_script( 'prefix-style', plugins_url('/scripts/fb_api.js', __FILE__) );
    
-    wp_register_script( 'custom-js', plugins_url('/scripts/scripts.js', __FILE__));
-    wp_enqueue_script( 'custom-js', plugins_url('/scripts/scripts.js', __FILE__));
-
   
 } add_action( 'admin_enqueue_scripts', 'dld_dealer_reviews_admin_enqueue_scripts' );
 

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: DLD Dealer Reviews
  * Description: Retrieves, manages and displays facebook and google reviews on 'dealer reviews' page, which is generated on activation
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Tom Molinaro
  *
  * DB USAGE :

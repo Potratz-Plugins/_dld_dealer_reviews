@@ -48,9 +48,9 @@ register_deactivation_hook( __FILE__, 'dld_dealer_reviews_deactivate' );
 
 
 
-function dld_dealer_reviews_admin_enqueue_scripts() {
+function dld_dealer_reviews_admin_enqueue_scripts($s_PageTitle) {
 
-    if ( preg_match( '/dld_manage_dealer_reviews/i', $s_PageTitle ) ) {
+    if (  preg_match( '/dld_manage_dealer_reviews/i', $s_PageTitle ) ) {
         wp_register_style( 'prefix-style', plugins_url('/styles/styles.css', __FILE__) );
         wp_enqueue_style( 'prefix-style', plugins_url('/styles/styles.css', __FILE__) );
     

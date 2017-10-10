@@ -16,7 +16,7 @@
  $MyUpdateChecker = new PluginUpdateChecker_2_0 (
     'https://kernl.us/api/v1/updates/59d64a4404605933619a0154/',
     __FILE__,
-    'dld_manage_dealer_reviews',
+    'dld_dealer_reviews',
     1
  );
  // $MyUpdateChecker->purchaseCode = "somePurchaseCode";  <---- optional!
@@ -29,7 +29,7 @@ function dld_dealer_reviews_admin_menu() {
             'Dealer Reviews Plugin Page',					// string $page_title
             'Dealer Reviews',					// string $menu_title
             'read',							// string $capability
-            'dld_manage_dealer_reviews',		// string $menu_slug
+            'dld_dealer_reviews',		// string $menu_slug
             'dld_dealer_reviews_init',		// callback $function
             'dashicons-admin-page',			// string $icon_url
             '94'							// int $position
@@ -59,7 +59,7 @@ register_deactivation_hook( __FILE__, 'dld_dealer_reviews_deactivate' );
 
 function dld_dealer_reviews_admin_enqueue_scripts($s_PageTitle) {
 
-    if (  preg_match( '/dld_manage_dealer_reviews/i', $s_PageTitle ) ) {
+    if (  preg_match( '/dld_dealer_reviews/i', $s_PageTitle ) ) {
         wp_register_style( 'prefix-style', plugins_url('/styles/styles.css', __FILE__) );
         wp_enqueue_style( 'prefix-style', plugins_url('/styles/styles.css', __FILE__) );
     

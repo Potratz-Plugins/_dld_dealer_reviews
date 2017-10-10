@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: DLD Dealer Reviews
- * Plugin URI: https://github.com/Potratz-Plugins/_dld_dealer_reviews
+ * Plugin URI: https://github.com/Potratz-Plugins/_dld_dealer_reviews/
  * Description: Retrieves, manages and displays facebook and google reviews on 'dealer reviews' page, which is generated on activation
  * Version: 1.0.6
  * Author: Tom Molinaro

@@ -102,7 +102,7 @@ not be deleted, but can be re-activated at any time and again added to the list 
 
     </table>
     
-    <form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
+    <form action="admin.php?page=_dld_dealer_reviews" method="post" enctype="multipart/form-data">
     <table style="width:600px;">
         <tr><td colspan="2" >
         <hr>
@@ -214,7 +214,7 @@ not be deleted, but can be re-activated at any time and again added to the list 
     $s_showGoogleReviews = get_option('ShowGoogleReviewsOptionValue');
 
 ?>
-<form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
+<form action="admin.php?page=_dld_dealer_reviews" method="post" enctype="multipart/form-data">
     <table>
         <tr><td style="font-weight:bold;font-size:1.2em;">
             SHOW GOOGLE REVIEWS: 
@@ -272,7 +272,7 @@ not be deleted, but can be re-activated at any time and again added to the list 
     }
 
 ?>
-<form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
+<form action="admin.php?page=_dld_dealer_reviews" method="post" enctype="multipart/form-data">
     <table>
         <tr><td style="font-weight:bold;font-size:1.2em">
             AVERAGE GOOGLE REVIEW: 
@@ -336,7 +336,7 @@ not be deleted, but can be re-activated at any time and again added to the list 
 
 <!-- ******************************************** GET GOOGLE REVIEWS ******************************************** -->
 <h2><strong>Get New Reviews:</strong></h2>
-<form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
+<form action="admin.php?page=_dld_dealer_reviews" method="post" enctype="multipart/form-data">
     <table>
         <tr><td colspan="2">
             <input type="text" name="refreshGoogleReviews" id="txtRefreshGoogleReviews" style="display:none;" value="yes">
@@ -352,7 +352,7 @@ not be deleted, but can be re-activated at any time and again added to the list 
 </form>
 
 <!-- ******************************************** GET FACEBOOK REVIEWS ******************************************** -->
-<form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
+<form action="admin.php?page=_dld_dealer_reviews" method="post" enctype="multipart/form-data">
     <table>
         <tr><td colspan="2">
             <input type="text" name="refreshReviews" id="txtRefreshReviews" style="display:none;" value="yes">
@@ -364,7 +364,7 @@ not be deleted, but can be re-activated at any time and again added to the list 
 </form>
 
 <!-- ******************************************** GET DEALER REVIEWS ******************************************** -->
-<form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
+<form action="admin.php?page=_dld_dealer_reviews" method="post" enctype="multipart/form-data">
     <table>
         <tr><td colspan="2">
             <input type="text" name="refreshDealerReviews" id="txtRefreshDealerReviews" style="display:none;" value="yes">
@@ -383,7 +383,7 @@ not be deleted, but can be re-activated at any time and again added to the list 
 
 
 
-<form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
+<form action="admin.php?page=_dld_dealer_reviews" method="post" enctype="multipart/form-data">
     <table>
         <tr><td colspan="2">
             <hr style="width:80%;" align="left">

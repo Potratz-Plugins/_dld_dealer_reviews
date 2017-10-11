@@ -347,6 +347,7 @@ not be deleted, but can be re-activated at any time and again added to the list 
             <h2 id="spanGoogleReviewsResults" style="font-weight:bold;display:inline;"></h2>
             <input type="submit" value="Save Google Reviews" name="submit"  id="btnSaveGoogleReviews" class="myRedButton" style="width:300px;height:30px;display:none;"  >
         </td></tr>
+       
     </table>
 </form>
 
@@ -358,6 +359,18 @@ not be deleted, but can be re-activated at any time and again added to the list 
         </td></tr>
         <tr><td colspan="2">
             <input type="submit" value="Get New Facebook Reviews" name="submit"  id="btnRefreshReviews" class="myButton" style="width:600px;height:35px;"  ></strong>
+        </td></tr>
+    </table>
+</form>
+
+<!-- ******************************************** GET DEALER REVIEWS ******************************************** -->
+<form action="admin.php?page=dld_manage_dealer_reviews" method="post" enctype="multipart/form-data">
+    <table>
+        <tr><td colspan="2">
+            <input type="text" name="refreshDealerReviews" id="txtRefreshDealerReviews" style="display:none;" value="yes">
+        </td></tr>
+        <tr><td colspan="2">
+            <input type="submit" value="Get New Dealer Reviews" name="submit"  id="btnRefreshDealerReviews" class="myGreyButton" style="width:600px;height:35px;"  ></strong>
         </td></tr>
     </table>
 </form>
